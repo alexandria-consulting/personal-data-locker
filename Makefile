@@ -4,6 +4,11 @@
 PROFILE ?= local
 IMAGE   := localhost/jss:latest
 CONTAINER := jss-server
+CADDY_IMAGE := docker.io/library/caddy:2
+
+# A gitignored profiles/<profile>.local.yaml, if present, overrides the
+# committed profile (e.g. to set your real hostname or LAN IP).
+CONFIG := $(firstword $(wildcard profiles/$(PROFILE).local.yaml) profiles/$(PROFILE).yaml)
 
 ifeq ($(PROFILE),lan)
 BIND := 0.0.0.0:4443:4443
@@ -11,14 +16,15 @@ else
 BIND := 127.0.0.1:4443:4443
 endif
 
-.PHONY: build up down restart logs status shell reset rebuild
+.PHONY: build up down restart logs status shell reset rebuild caddy-validate grant-webid
 
 build:
 	podman build -t $(IMAGE) jss
 
 up: build
+	@echo "Using $(CONFIG), publishing $(BIND)"
 	podman kube play --replace \
-		--configmap profiles/$(PROFILE).yaml \
+		--configmap $(CONFIG) \
 		--publish $(BIND) \
 		jss.yaml
 
@@ -47,3 +53,14 @@ reset:
 rebuild:
 	podman build --no-cache -t $(IMAGE) jss
 	$(MAKE) restart PROFILE=$(PROFILE)
+
+# Check proxy/Caddyfile syntax in a throwaway Caddy container (nothing is
+# installed on the host).
+caddy-validate:
+	podman run --rm -v ./proxy/Caddyfile:/etc/caddy/Caddyfile:ro,Z $(CADDY_IMAGE) \
+		caddy validate --adapter caddyfile --config /etc/caddy/Caddyfile
+
+# Grant a WebID Read/Write/Control on a container, keeping existing rules.
+# Usage: make grant-webid POD=test CONTAINER=private WEBID=https://... [EMAIL=... PASSWORD=...]
+grant-webid:
+	scripts/grant-webid.sh "$(POD)" "$(CONTAINER)" "$(WEBID)"
