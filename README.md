@@ -265,3 +265,12 @@ podman rmi localhost/jss:latest docker.io/library/node:22-bookworm-slim docker.i
 
 Then delete this folder. If you installed Caddy, remove the JSS block from
 `/etc/caddy/Caddyfile` (or `sudo apt remove caddy`).
+
+## License
+
+This repository's own files are under the MIT license; see [LICENSE](LICENSE).
+JavaScript Solid Server (AGPL-3.0-only, © Melvin Carvalho), which the image
+installs from npm, and the other software this setup uses are licensed
+separately; see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). Because the
+built image contains JSS, distributing it or serving a modified JSS from it
+brings in AGPL-3.0 obligations.
