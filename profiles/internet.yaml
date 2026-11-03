@@ -9,8 +9,9 @@
 # domain, the same name as in the Caddyfile. Keep the trailing slash.
 #
 # Security:
-# - JSS_INVITE_ONLY: POST /.pods needs an invite code, so strangers can't
-#   create accounts. Create invites with `make shell`, then `jss invite --help`.
+# - JSS_INVITE_ONLY: the IdP sign-up form needs an invite code (create them
+#   with `make shell`, then `jss invite --help`). It does NOT cover the
+#   POST /.pods API, which stays open; see "Security notes" in the README.
 # - remoteStorage (/storage/me/...) is always on in JSS 0.0.224 and has no env
 #   var to disable it. It lets any logged-in account bypass WAC, so the
 #   Caddyfile blocks /storage/*. Never expose port 4443 directly.

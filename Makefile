@@ -18,7 +18,7 @@ else
 BIND := 127.0.0.1:4443:4443
 endif
 
-.PHONY: build up down restart logs status shell reset rebuild caddy-validate grant-webid
+.PHONY: build up down restart logs status shell reset rebuild caddy-validate grant-webid create-pod
 
 build:
 	podman build -t $(IMAGE) jss
@@ -61,6 +61,11 @@ rebuild:
 caddy-validate:
 	podman run --rm -v ./proxy/Caddyfile:/etc/caddy/Caddyfile:ro,Z $(CADDY_IMAGE) \
 		caddy validate --adapter caddyfile --config /etc/caddy/Caddyfile
+
+# Create a pod with a generated password, saved to ~/.config/jss-dev/<name>-account.txt.
+# Usage: make create-pod NAME=billy [EMAIL=billy@example.com]
+create-pod:
+	scripts/create-pod.sh "$(NAME)" $(EMAIL)
 
 # Grant a WebID Read/Write/Control on a container, keeping existing rules.
 # Usage: make grant-webid POD=test CONTAINER=private WEBID=https://... [EMAIL=... PASSWORD=...]

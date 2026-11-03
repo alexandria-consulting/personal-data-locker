@@ -15,6 +15,7 @@ installed on the host except Podman (and, optionally, Caddy for HTTPS).
 | `profiles/internet.yaml` | ConfigMap for a public HTTPS domain behind Caddy, invite-only |
 | `profiles/*.local.yaml` | Your machine-specific copies of the profiles (gitignored, used automatically) |
 | `proxy/Caddyfile` | Host-side Caddy reverse proxy (internet site, LAN `tls internal` example) |
+| `scripts/create-pod.sh` | Create a pod with a generated password, saving the login outside the repo |
 | `scripts/grant-webid.sh` | Grant a WebID access to a container, keeping existing ACL rules |
 | `Makefile` | Build / run / inspect / reset commands |
 
@@ -39,13 +40,50 @@ sudo apt install -y podman make
 | `make rebuild` | Rebuild the image without cache, then restart |
 | `make reset` | Stop the pod and, after confirmation, delete all data and secrets |
 | `make caddy-validate` | Check `proxy/Caddyfile` in a throwaway Caddy container |
+| `make create-pod NAME=…` | Create a pod (account) and save its login to `~/.config/jss-dev/<name>-account.txt` |
 | `make grant-webid POD=… CONTAINER=… WEBID=…` | Give a WebID Read/Write/Control on a container |
 
 Pass the same `PROFILE=` to `restart` and `rebuild` that you used for `up`.
 
 ## Create a pod (account)
 
-With the server up on the local profile:
+With the server up on the local profile, create a pod (account) named `billy`:
+
+```bash
+make create-pod NAME=billy
+```
+
+```text
+WebID:   http://localhost:4443/billy/profile/card.jsonld#me
+Pod:     http://localhost:4443/billy/
+Login:   /home/eric/.config/jss-dev/billy-account.txt
+```
+
+`scripts/create-pod.sh` generates a random password, calls `POST /.pods`, and
+saves the login to `~/.config/jss-dev/<name>-account.txt` (folder mode 700,
+file mode 600, outside the repo) as `email=`, `password=`, `webid=` and `pod=`
+lines. That's where `make grant-webid` and the examples below look for it. The
+email defaults to `<name>@localhost`; pass `EMAIL=…` to change it. It never
+prints the password or the long-lived token that `POST /.pods` returns, and it
+refuses to overwrite an existing account file.
+
+To read the password back:
+
+```bash
+sed -n 's/^password=//p' ~/.config/jss-dev/billy-account.txt
+```
+
+Accounts created so far on this machine's local server:
+
+| Pod | WebID | Login file |
+| --- | --- | --- |
+| `test` | `http://localhost:4443/test/profile/card.jsonld#me` | `~/.config/jss-dev/test-account.txt` |
+| `billy` | `http://localhost:4443/billy/profile/card.jsonld#me` | `~/.config/jss-dev/billy-account.txt` |
+
+The test account's login is saved in `~/.config/jss-dev/test-account.txt`.
+
+The raw API call, if you'd rather do it by hand (the response includes a
+long-lived `token`; treat it like a password):
 
 ```bash
 curl -X POST http://localhost:4443/.pods \
@@ -53,24 +91,17 @@ curl -X POST http://localhost:4443/.pods \
   -d '{"name":"eric","email":"eric@example.com","password":"choose-a-password"}'
 ```
 
-The WebID is `http://localhost:4443/eric/profile/card.jsonld#me` and the pod
-root is `http://localhost:4443/eric/`. The response also contains a
-long-lived `token` for the new account; treat it like a password.
-
-The test account's login is saved in `~/.config/jss-dev/test-account.txt`
-(outside the repo, mode 600). Its WebID is
-`http://localhost:4443/test/profile/card.jsonld#me`.
-
 ## Get a token and write a resource
 
 ```bash
-TOKEN=$(curl -s -X POST http://localhost:4443/idp/credentials \
-  -H 'Content-Type: application/json' \
-  -d '{"email":"eric@example.com","password":"choose-a-password"}' | jq -r .access_token)
+F=~/.config/jss-dev/billy-account.txt
+TOKEN=$(jq -n --arg e "$(sed -n 's/^email=//p' $F)" --arg p "$(sed -n 's/^password=//p' $F)" '{email: $e, password: $p}' \
+  | curl -s -X POST http://localhost:4443/idp/credentials -H 'Content-Type: application/json' --data-binary @- \
+  | jq -r .access_token)
 ```
 
 ```bash
-curl -X PUT http://localhost:4443/eric/notes/hello.txt \
+curl -X PUT http://localhost:4443/billy/notes/hello.txt \
   -H "Authorization: Bearer $TOKEN" \
   -H 'Content-Type: text/plain' \
   --data 'Hello, Solid'
@@ -145,7 +176,9 @@ It also blocks `/storage/*` (see [Security](#security-notes-for-going-public)).
    make up PROFILE=internet
    ```
 
-5. Create accounts with invite codes:
+5. Create accounts with `make create-pod NAME=…` from this machine (see
+   [Security](#security-notes-for-going-public) about the open `POST /.pods`
+   API), or hand out invite codes for the IdP sign-up form:
 
    ```bash
    podman exec -it jss-server jss invite create --help
@@ -227,8 +260,13 @@ JSS.
   There's no setting to turn it off. `proxy/Caddyfile` blocks `/storage/*`; keep
   that rule. It's also reachable on the `local` and `lan` bindings, which have
   no Caddy in front, so don't put real data in multi-user pods there.
-- **Invite-only.** The `internet` profile sets `JSS_INVITE_ONLY=true`, so
-  `POST /.pods` needs an invite code (`jss invite create` inside the container).
+- **Invite-only covers the sign-up form, not the API.** The `internet` profile
+  sets `JSS_INVITE_ONLY=true`, so the IdP's sign-up form needs an invite code
+  (`jss invite create` inside the container). But in JSS 0.0.224 the
+  `POST /.pods` API doesn't check invites (and its declared one-per-IP-per-day
+  limit wasn't enforced in testing), so anyone who can reach it can create
+  accounts. Before going public, block it in the Caddyfile and create accounts
+  from this machine against `http://localhost:4443`.
 - **Long-lived tokens.** `POST /.pods` returns a long-lived `token` for the new
   account. Don't log it or paste it anywhere; if it leaks, change the account's
   password (`jss passwd <user>` inside the container) or recreate the account.
