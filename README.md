@@ -57,6 +57,49 @@ Build the image first with `podman build -t localhost/jss:latest jss`
 
 Pass the same `PROFILE=` to `restart` and `rebuild` that you used for `up`.
 
+### Is it running?
+
+Run these from the repo root, like the other commands. With make:
+
+```bash
+make status
+```
+
+The `jss` pod should show `Running` and `jss-server` should show `Up`, with
+`127.0.0.1:4443->4443/tcp` (or `0.0.0.0:4443` on the `lan` profile). `Exited`
+or no pod at all means it's stopped. `make logs` follows the server log.
+
+Without make:
+
+```bash
+podman pod ps
+```
+
+```bash
+podman ps --all --filter name=jss-server
+```
+
+Look for `Running` (pod) and `Up …` (container); `Exited` means it stopped.
+Follow the log with:
+
+```bash
+podman logs -f jss-server
+```
+
+Either way, check that it answers HTTP:
+
+```bash
+curl -s -o /dev/null -w '%{http_code}\n' http://localhost:4443/
+```
+
+`200` means it's up; `000` means nothing is listening on port 4443. You can
+also open <http://localhost:4443/> in a browser.
+
+The pod doesn't start again by itself after a reboot (rootless Podman doesn't
+start pods at boot unless you set that up), so after restarting the machine,
+run `make up` again. Your data is kept in the `jss-data` and `jss-secrets`
+volumes.
+
 ## Create a pod (account)
 
 With the server up on the local profile, create a pod (account) named `your_pod_username`:
