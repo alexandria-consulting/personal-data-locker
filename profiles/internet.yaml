@@ -11,7 +11,8 @@
 # Security:
 # - JSS_INVITE_ONLY: the IdP sign-up form needs an invite code (create them
 #   with `make shell`, then `jss invite --help`). It does NOT cover the
-#   POST /.pods API, which stays open; see "Security notes" in the README.
+#   POST /.pods API, so the Caddyfile blocks that with 403. Create accounts
+#   on this host with `make create-pod` (talks to localhost:4443 directly).
 # - remoteStorage (/storage/me/...) is always on in JSS 0.0.224 and has no env
 #   var to disable it. It lets any logged-in account bypass WAC, so the
 #   Caddyfile blocks /storage/*. Never expose port 4443 directly.

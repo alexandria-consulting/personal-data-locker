@@ -148,7 +148,7 @@ Caddy runs on the host because rootless Podman can't bind ports below 1024 by
 default. `proxy/Caddyfile` forwards everything to `127.0.0.1:4443`. Caddy
 passes the original `Host` and sets `X-Forwarded-*`, which JSS honors
 (`trustProxy`), and it proxies WebSocket notifications with no extra config.
-It also blocks `/storage/*` (see [Security](#security-notes-for-going-public)).
+It also blocks `/storage/*` and `POST /.pods` (see [Security](#security-notes-for-going-public)).
 
 1. Point DNS for your domain (an A and/or AAAA record) at this host, and make
    sure ports 80 and 443 reach it from the internet (router port forwarding,
@@ -176,9 +176,10 @@ It also blocks `/storage/*` (see [Security](#security-notes-for-going-public)).
    make up PROFILE=internet
    ```
 
-5. Create accounts with `make create-pod NAME=…` from this machine (see
-   [Security](#security-notes-for-going-public) about the open `POST /.pods`
-   API), or hand out invite codes for the IdP sign-up form:
+5. Create accounts with `make create-pod NAME=…` on this machine (it talks to
+   `localhost:4443` directly; Caddy returns 403 for `POST /.pods`, see
+   [Security](#security-notes-for-going-public)), or hand out invite codes for
+   the IdP sign-up form at `/idp/register`, which stays open and enforces them:
 
    ```bash
    podman exec -it jss-server jss invite create --help
@@ -265,8 +266,9 @@ JSS.
   (`jss invite create` inside the container). But in JSS 0.0.224 the
   `POST /.pods` API doesn't check invites (and its declared one-per-IP-per-day
   limit wasn't enforced in testing), so anyone who can reach it can create
-  accounts. Before going public, block it in the Caddyfile and create accounts
-  from this machine against `http://localhost:4443`.
+  accounts. `proxy/Caddyfile` therefore answers `POST /.pods` with 403; create
+  accounts from this machine with `make create-pod`, which talks to
+  `http://localhost:4443` directly and doesn't go through Caddy.
 - **Long-lived tokens.** `POST /.pods` returns a long-lived `token` for the new
   account. Don't log it or paste it anywhere; if it leaks, change the account's
   password (`jss passwd <user>` inside the container) or recreate the account.

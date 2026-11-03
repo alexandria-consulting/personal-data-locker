@@ -24,6 +24,16 @@
 	@remotestorage path /storage /storage/*
 	respond @remotestorage 404
 
+	# POST /.pods creates accounts. In 0.0.224 it ignores JSS_INVITE_ONLY (and
+	# its per-IP limit isn't enforced), so anyone could sign up through it.
+	# Block it publicly; create accounts on this host against
+	# http://localhost:4443 (make create-pod), which doesn't go through Caddy.
+	@createpod {
+		method POST
+		path /.pods /.pods/*
+	}
+	respond @createpod "Account creation is disabled on this server." 403
+
 	reverse_proxy 127.0.0.1:4443
 }
 
