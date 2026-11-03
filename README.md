@@ -4,6 +4,24 @@ A contained development install of the [JavaScript Solid Server](https://jss.liv
 (npm `javascript-solid-server`). Everything runs inside a Podman pod; nothing is
 installed on the host except Podman (and, optionally, Caddy for HTTPS).
 
+## Contents
+
+- [Layout](#layout)
+- [Install (Ubuntu)](#install-ubuntu)
+- [Running](#running)
+  - [With make](#with-make)
+  - [Running without make](#running-without-make)
+  - [Is it running?](#is-it-running)
+- [Create a pod (account)](#create-a-pod-account)
+- [Get a token and write a resource](#get-a-token-and-write-a-resource)
+- [Profiles](#profiles)
+- [HTTPS with Caddy](#https-with-caddy)
+- [Granting access to an external WebID](#granting-access-to-an-external-webid)
+- [Security notes for going public](#security-notes-for-going-public)
+- [Upgrading JSS](#upgrading-jss)
+- [Full removal](#full-removal)
+- [License](#license)
+
 ## Layout
 
 | Path | Purpose |
@@ -25,7 +43,14 @@ installed on the host except Podman (and, optionally, Caddy for HTTPS).
 sudo apt install -y podman make
 ```
 
-## Commands
+## Running
+
+Run `make` and the `podman` commands below from the root of the install
+directory, the folder containing `jss.yaml` and the `Makefile` (here,
+`/home/eric/git/personal-data-locker-test`). They use relative paths such as
+`jss/`, `profiles/` and `jss.yaml`, so they fail from anywhere else.
+
+### With make
 
 | Command | What it does |
 | --- | --- |
@@ -43,10 +68,9 @@ sudo apt install -y podman make
 | `make create-pod NAME=…` | Create a pod (account) and save its login to `~/.config/jss-dev/<name>-account.txt` |
 | `make grant-webid POD=… CONTAINER=… WEBID=…` | Give a WebID Read/Write/Control on a container |
 
-Run `make` and the `podman` commands below from the root of the install
-directory, the folder containing `jss.yaml` and the `Makefile` (here,
-`/home/eric/git/personal-data-locker-test`). They use relative paths such as
-`jss/`, `profiles/` and `jss.yaml`, so they fail from anywhere else.
+Pass the same `PROFILE=` to `restart` and `rebuild` that you used for `up`.
+
+### Running without make
 
 Without make, the equivalents are `podman kube play --replace --configmap profiles/local.yaml --publish 127.0.0.1:4443:4443 jss.yaml` to start and `podman kube down jss.yaml` to stop.
 Build the image first with `podman build -t localhost/jss:latest jss`
@@ -55,11 +79,9 @@ Build the image first with `podman build -t localhost/jss:latest jss`
 `--publish 0.0.0.0:4443:4443` for `lan`, `--publish 127.0.0.1:4443:4443` for
 `local` and `internet`.
 
-Pass the same `PROFILE=` to `restart` and `rebuild` that you used for `up`.
-
 ### Is it running?
 
-Run these from the repo root, like the other commands. With make:
+With make:
 
 ```bash
 make status
