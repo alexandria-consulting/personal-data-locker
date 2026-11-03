@@ -49,6 +49,10 @@ curl -X POST http://localhost:4443/.pods \
 The WebID is `http://localhost:4443/eric/profile/card.jsonld#me` and the pod
 root is `http://localhost:4443/eric/`.
 
+The test account's login is saved in `~/.config/jss-dev/test-account.txt`
+(outside the repo, mode 600). Its WebID is
+`http://localhost:4443/test/profile/card.jsonld#me`.
+
 ## Get a token and write a resource
 
 ```bash
