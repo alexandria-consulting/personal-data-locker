@@ -47,16 +47,16 @@ Pass the same `PROFILE=` to `restart` and `rebuild` that you used for `up`.
 
 ## Create a pod (account)
 
-With the server up on the local profile, create a pod (account) named `billy`:
+With the server up on the local profile, create a pod (account) named `your_pod_username`:
 
 ```bash
-make create-pod NAME=billy
+make create-pod NAME=your_pod_username
 ```
 
 ```text
-WebID:   http://localhost:4443/billy/profile/card.jsonld#me
-Pod:     http://localhost:4443/billy/
-Login:   /home/eric/.config/jss-dev/billy-account.txt
+WebID:   http://localhost:4443/your_pod_username/profile/card.jsonld#me
+Pod:     http://localhost:4443/your_pod_username/
+Login:   /home/eric/.config/jss-dev/your_pod_username-account.txt
 ```
 
 `scripts/create-pod.sh` generates a random password, calls `POST /.pods`, and
@@ -70,7 +70,7 @@ refuses to overwrite an existing account file.
 To read the password back:
 
 ```bash
-sed -n 's/^password=//p' ~/.config/jss-dev/billy-account.txt
+sed -n 's/^password=//p' ~/.config/jss-dev/your_pod_username-account.txt
 ```
 
 Accounts created so far on this machine's local server:
@@ -78,7 +78,6 @@ Accounts created so far on this machine's local server:
 | Pod | WebID | Login file |
 | --- | --- | --- |
 | `test` | `http://localhost:4443/test/profile/card.jsonld#me` | `~/.config/jss-dev/test-account.txt` |
-| `billy` | `http://localhost:4443/billy/profile/card.jsonld#me` | `~/.config/jss-dev/billy-account.txt` |
 
 The test account's login is saved in `~/.config/jss-dev/test-account.txt`.
 
@@ -94,14 +93,14 @@ curl -X POST http://localhost:4443/.pods \
 ## Get a token and write a resource
 
 ```bash
-F=~/.config/jss-dev/billy-account.txt
+F=~/.config/jss-dev/your_pod_username-account.txt
 TOKEN=$(jq -n --arg e "$(sed -n 's/^email=//p' $F)" --arg p "$(sed -n 's/^password=//p' $F)" '{email: $e, password: $p}' \
   | curl -s -X POST http://localhost:4443/idp/credentials -H 'Content-Type: application/json' --data-binary @- \
   | jq -r .access_token)
 ```
 
 ```bash
-curl -X PUT http://localhost:4443/billy/notes/hello.txt \
+curl -X PUT http://localhost:4443/your_pod_username/notes/hello.txt \
   -H "Authorization: Bearer $TOKEN" \
   -H 'Content-Type: text/plain' \
   --data 'Hello, Solid'
