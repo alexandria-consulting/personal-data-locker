@@ -7,7 +7,11 @@ installed on the host except Podman (and, optionally, Caddy for HTTPS).
 ## Contents
 
 - [Layout](#layout)
-- [Install (Ubuntu)](#install-ubuntu)
+- [Install](#install)
+  - [Ubuntu](#ubuntu)
+  - [Linux Mint](#linux-mint)
+  - [macOS](#macos)
+  - [Windows](#windows)
 - [Running](#running)
   - [With make](#with-make)
   - [Running without make](#running-without-make)
@@ -37,11 +41,91 @@ installed on the host except Podman (and, optionally, Caddy for HTTPS).
 | `scripts/grant-webid.sh` | Grant a WebID access to a container, keeping existing ACL rules |
 | `Makefile` | Build / run / inspect / reset commands |
 
-## Install (Ubuntu)
+## Install
+
+You need Podman, `make`, and `curl`, `jq` and `openssl` for the helper
+scripts. Then clone this repo and run everything from its root folder (see
+[Running](#running)). Only Ubuntu has been tested here; the macOS and Windows
+steps follow Podman's standard setup and are untested.
+
+### Ubuntu
 
 ```bash
-sudo apt install -y podman make
+sudo apt install -y podman make curl jq openssl
 ```
+
+### Linux Mint
+
+Linux Mint 21 and 22 are based on Ubuntu, so it's the same:
+
+```bash
+sudo apt install -y podman make curl jq openssl
+```
+
+Mint 22 (Ubuntu 24.04 base) ships Podman 4.9, which has everything used here
+(`podman kube play --replace --publish`, `podman kube down`). Mint 21 (Ubuntu
+22.04 base) ships Podman 3.4, which is too old; upgrade to Mint 22 or install a
+newer Podman from the [Podman install page](https://podman.io/docs/installation).
+
+Rootless Podman needs your user in `/etc/subuid` and `/etc/subgid`; normal
+Mint accounts already are. Check with:
+
+```bash
+grep "^$USER:" /etc/subuid /etc/subgid
+```
+
+### macOS
+
+Podman runs containers in a small Linux VM on macOS. With
+[Homebrew](https://brew.sh/):
+
+```bash
+xcode-select --install
+```
+
+```bash
+brew install podman jq
+```
+
+```bash
+podman machine init && podman machine start
+```
+
+`xcode-select --install` provides `make` (`curl` and `openssl` are built in).
+Published ports such as `127.0.0.1:4443` are forwarded from the VM to your Mac,
+so <http://localhost:4443/> works as on Linux. Keep this repo under your home
+folder, which the VM can see. The `jss-data` and `jss-secrets` volumes live
+inside the VM, so the on-disk volume paths elsewhere in this README are
+Linux-only. After a reboot, run `podman machine start` before `make up`.
+[Podman Desktop](https://podman-desktop.io/) is a graphical alternative to the
+`brew` install. For HTTPS, `brew install caddy`.
+
+### Windows
+
+The simplest route is WSL 2 with Ubuntu, then the Ubuntu steps inside it. In
+PowerShell as administrator:
+
+```powershell
+wsl --install -d Ubuntu
+```
+
+Restart if asked, open the **Ubuntu** app, and run:
+
+```bash
+sudo apt update && sudo apt install -y podman make curl jq openssl
+```
+
+Clone this repo inside the Ubuntu home folder (for example `~/git/`), not under
+`/mnt/c/`, and run the `make` commands from there. WSL forwards `localhost`,
+so <http://localhost:4443/> opens from your Windows browser.
+
+Alternatively, install Podman for Windows (it also runs on WSL 2) with
+`winget install -e --id RedHat.Podman` or [Podman Desktop](https://podman-desktop.io/),
+then `podman machine init` and `podman machine start` (again after each
+reboot). From PowerShell you can then use the commands in
+[Running without make](#running-without-make), but the `Makefile` and the
+`create-pod`/`grant-webid` scripts need bash (WSL or Git Bash). For HTTPS,
+`winget install -e --id CaddyServer.Caddy`, or install Caddy inside WSL.
 
 ## Running
 
