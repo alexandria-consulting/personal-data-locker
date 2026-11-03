@@ -43,6 +43,18 @@ sudo apt install -y podman make
 | `make create-pod NAME=…` | Create a pod (account) and save its login to `~/.config/jss-dev/<name>-account.txt` |
 | `make grant-webid POD=… CONTAINER=… WEBID=…` | Give a WebID Read/Write/Control on a container |
 
+Run `make` and the `podman` commands below from the root of the install
+directory, the folder containing `jss.yaml` and the `Makefile` (here,
+`/home/eric/git/personal-data-locker-test`). They use relative paths such as
+`jss/`, `profiles/` and `jss.yaml`, so they fail from anywhere else.
+
+Without make, the equivalents are `podman kube play --replace --configmap profiles/local.yaml --publish 127.0.0.1:4443:4443 jss.yaml` to start and `podman kube down jss.yaml` to stop.
+Build the image first with `podman build -t localhost/jss:latest jss`
+(`make up` does this for you). For another profile, use
+`profiles/<name>.yaml` (or your `profiles/<name>.local.yaml`) and its bind:
+`--publish 0.0.0.0:4443:4443` for `lan`, `--publish 127.0.0.1:4443:4443` for
+`local` and `internet`.
+
 Pass the same `PROFILE=` to `restart` and `rebuild` that you used for `up`.
 
 ## Create a pod (account)
