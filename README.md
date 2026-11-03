@@ -268,9 +268,17 @@ Then delete this folder. If you installed Caddy, remove the JSS block from
 
 ## License
 
-This repository's own files are under the MIT license; see [LICENSE](LICENSE).
-JavaScript Solid Server (AGPL-3.0-only, © Melvin Carvalho), which the image
-installs from npm, and the other software this setup uses are licensed
-separately; see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). Because the
-built image contains JSS, distributing it or serving a modified JSS from it
-brings in AGPL-3.0 obligations.
+Copyright (C) 2026 Eric Jahn
+
+This program is free software: you can redistribute it and/or modify it under
+the terms of the GNU Affero General Public License as published by the Free
+Software Foundation, version 3 only (`SPDX-License-Identifier: AGPL-3.0-only`).
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+details. The full text is in [LICENSE](LICENSE).
+
+JavaScript Solid Server (also AGPL-3.0-only, © Melvin Carvalho), which the
+image installs from npm, and the other software this setup uses are licensed
+separately by their authors; see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).

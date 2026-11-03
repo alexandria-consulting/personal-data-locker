@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# SPDX-License-Identifier: AGPL-3.0-only
+# Copyright (C) 2026 Eric Jahn
 # Grant a WebID Read/Write/Control on a pod container, keeping the existing
 # authorizations in its .acl. Safe to re-run: an existing grant for the same
 # WebID is replaced, not duplicated.
@@ -17,7 +19,7 @@
 set -euo pipefail
 
 if [ $# -ne 3 ] || [ -z "$1" ] || [ -z "$2" ] || [ -z "$3" ]; then
-  sed -n '6,8p' "$0" >&2
+  sed -n '8,10p' "$0" >&2
   exit 2
 fi
 

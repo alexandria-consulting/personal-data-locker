@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: AGPL-3.0-only
+# Copyright (C) 2026 Eric Jahn
 # LAN profile: `make up PROFILE=lan` publishes JSS on 0.0.0.0:4443 so other
 # machines on the network can reach it over plain HTTP.
 #

@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: AGPL-3.0-only
+# Copyright (C) 2026 Eric Jahn
 # Contained JavaScript Solid Server, run with Podman.
 # Usage: make up [PROFILE=local|lan|internet]
 

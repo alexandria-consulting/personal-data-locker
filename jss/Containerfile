@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: AGPL-3.0-only
+# Copyright (C) 2026 Eric Jahn
 # JavaScript Solid Server (JSS) image.
 # Build: podman build -t localhost/jss:latest jss
 FROM docker.io/library/node:22-bookworm-slim

@@ -2,7 +2,9 @@
 
 This repository holds configuration only: a Containerfile, a Kubernetes Pod
 definition, ConfigMap profiles, a Caddyfile, a Makefile, a helper script and
-documentation. Those files are covered by the MIT license in `LICENSE`.
+documentation. Those files are Copyright (C) 2026 Eric Jahn and licensed
+under the GNU Affero General Public License v3.0 only (`AGPL-3.0-only`); the
+full text is in `LICENSE`.
 
 It contains **no source code from JavaScript Solid Server or any other
 third-party project**. JSS and the other software below are downloaded from
