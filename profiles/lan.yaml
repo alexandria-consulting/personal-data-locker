@@ -1,0 +1,18 @@
+# LAN profile: published on 0.0.0.0:4443 so other machines on the network can
+# reach it. Replace CHANGE-ME.local with this machine's hostname.
+#
+# NOTE: browsers only allow Solid-OIDC login over HTTPS or on localhost. Plain
+# http://<host>.local works for unauthenticated reads only. For LAN logins, put
+# Caddy in front with `tls internal` (see proxy/Caddyfile) and set the issuer
+# to the https:// URL Caddy serves.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: jss-config
+data:
+  JSS_IDP: "true"
+  JSS_IDP_ISSUER: "http://CHANGE-ME.local:4443/"
+  JSS_MULTIUSER: "true"
+  JSS_CONNEG: "true"
+  JSS_NOTIFICATIONS: "true"
+  JSS_LOG_LEVEL: "info"

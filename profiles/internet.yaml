@@ -1,0 +1,15 @@
+# Internet profile: JSS stays bound to 127.0.0.1:4443 and Caddy on the host
+# terminates HTTPS for pod.example.com (see proxy/Caddyfile).
+# Replace pod.example.com with your real domain here and in the Caddyfile.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: jss-config
+data:
+  JSS_IDP: "true"
+  JSS_IDP_ISSUER: "https://pod.example.com/"
+  JSS_MULTIUSER: "true"
+  JSS_INVITE_ONLY: "true"
+  JSS_CONNEG: "true"
+  JSS_NOTIFICATIONS: "true"
+  JSS_LOG_LEVEL: "warn"

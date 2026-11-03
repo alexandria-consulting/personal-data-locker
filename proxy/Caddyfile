@@ -1,0 +1,20 @@
+# Caddy reverse proxy for JSS.
+#
+# Caddy runs on the host (sudo apt install caddy), not in a container, because
+# rootless Podman can't bind ports below 1024 by default. Copy or include this
+# file in /etc/caddy/Caddyfile, then: sudo systemctl reload caddy
+
+# Internet profile: public domain with an automatic Let's Encrypt certificate.
+pod.example.com {
+	reverse_proxy 127.0.0.1:4443
+}
+
+# LAN profile example: HTTPS with Caddy's own local CA so browsers allow
+# Solid-OIDC logins. Install Caddy's root cert on client machines
+# (`sudo caddy trust` on this host; copy the root cert to others) and set
+# JSS_IDP_ISSUER to https://CHANGE-ME.local/ in profiles/lan.yaml.
+#
+# CHANGE-ME.local {
+# 	tls internal
+# 	reverse_proxy 127.0.0.1:4443
+# }
