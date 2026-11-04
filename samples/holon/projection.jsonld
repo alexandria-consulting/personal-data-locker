@@ -4,13 +4,15 @@
     "holon": "http://w3id.org/holon/",
     "hev": "http://w3id.org/holon/event/",
     "hproj": "http://w3id.org/holon/projection/",
+    "ucm": "urn:w3c:cg:ucm#",
+    "ucmsh": "urn:w3c:cg:ucm:shapes#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "owl": "http://www.w3.org/2002/07/owl#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "sh": "http://www.w3.org/ns/shacl#",
     "prov": "http://www.w3.org/ns/prov#",
     "dcterms": "http://purl.org/dc/terms/",
-    "schema": "https://schema.org/",
     "fl": "__H__vocab.jsonld#"
   },
   "@graph": [
@@ -18,7 +20,7 @@
       "@id": "__H__projection.jsonld#now",
       "@type": "hproj:NowGraph",
       "rdfs:label": "Billy now",
-      "rdfs:comment": "Read-only projection of Billy's holon and its child holon: current values in the scene graph, history in the event graph.",
+      "rdfs:comment": "Read-only projection of Billy's locker and the two holons inside it: current state in the scene graph, history in the event graph.",
       "hproj:sourceHolon": {
         "@id": "__H__holon.jsonld#billy"
       },

@@ -4,13 +4,15 @@
     "holon": "http://w3id.org/holon/",
     "hev": "http://w3id.org/holon/event/",
     "hproj": "http://w3id.org/holon/projection/",
+    "ucm": "urn:w3c:cg:ucm#",
+    "ucmsh": "urn:w3c:cg:ucm:shapes#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "owl": "http://www.w3.org/2002/07/owl#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "sh": "http://www.w3.org/ns/shacl#",
     "prov": "http://www.w3.org/ns/prov#",
     "dcterms": "http://purl.org/dc/terms/",
-    "schema": "https://schema.org/",
     "fl": "__H__vocab.jsonld#"
   },
   "@graph": [
@@ -18,13 +20,16 @@
       "@id": "__H__boundary.jsonld#EventShape",
       "@type": "sh:NodeShape",
       "rdfs:label": "Event boundary",
-      "rdfs:comment": "Every event entering Billy's holons names its holon, fluent and value, carries both bitemporal timestamps, and says what produced it.",
+      "rdfs:comment": "Every event entering Billy's holons names its holon and payload, carries both bitemporal timestamps, and says what produced it. Payload content is validated by the UCM core shapes (ucmsh:*), published at https://github.com/w3c-cg/ucm/blob/main/ucm-core-shapes.ttl.",
       "sh:targetClass": [
         {
           "@id": "hev:AssertionEvent"
         },
         {
           "@id": "hev:ObservationEvent"
+        },
+        {
+          "@id": "hev:CommandEvent"
         }
       ],
       "sh:property": [
@@ -37,23 +42,6 @@
           "sh:nodeKind": {
             "@id": "sh:IRI"
           }
-        },
-        {
-          "sh:path": {
-            "@id": "fl:fluent"
-          },
-          "sh:minCount": 1,
-          "sh:maxCount": 1,
-          "sh:class": {
-            "@id": "fl:Fluent"
-          }
-        },
-        {
-          "sh:path": {
-            "@id": "fl:value"
-          },
-          "sh:minCount": 1,
-          "sh:maxCount": 1
         },
         {
           "sh:path": {
@@ -73,8 +61,7 @@
           "sh:maxCount": 1,
           "sh:datatype": {
             "@id": "xsd:dateTime"
-          },
-          "sh:message": "hev:assertedAt and hev:receivedAt must be stored as distinct values."
+          }
         },
         {
           "sh:path": {
@@ -87,6 +74,24 @@
         },
         {
           "sh:path": {
+            "@id": "prov:wasAttributedTo"
+          },
+          "sh:minCount": 1,
+          "sh:nodeKind": {
+            "@id": "sh:IRI"
+          }
+        },
+        {
+          "sh:path": {
+            "@id": "fl:fluent"
+          },
+          "sh:maxCount": 1,
+          "sh:class": {
+            "@id": "fl:Fluent"
+          }
+        },
+        {
+          "sh:path": {
             "@id": "fl:supersedes"
           },
           "sh:maxCount": 1,
@@ -95,11 +100,45 @@
           }
         }
       ],
-      "sh:sparql": {
-        "@type": "sh:SPARQLConstraint",
-        "sh:message": "An assertion cannot be received before it was asserted.",
-        "sh:select": "PREFIX hev: <http://w3id.org/holon/event/>\nSELECT $this WHERE { $this a hev:AssertionEvent ; hev:assertedAt ?a ; hev:receivedAt ?r . FILTER (?a > ?r) }"
-      }
+      "sh:or": {
+        "@list": [
+          {
+            "sh:path": {
+              "@id": "hev:assertionPayload"
+            },
+            "sh:minCount": 1
+          },
+          {
+            "sh:path": {
+              "@id": "hev:observationPayload"
+            },
+            "sh:minCount": 1
+          },
+          {
+            "sh:path": {
+              "@id": "hev:commandPayload"
+            },
+            "sh:minCount": 1
+          }
+        ]
+      },
+      "sh:sparql": [
+        {
+          "@type": "sh:SPARQLConstraint",
+          "sh:message": "An assertion cannot be received before it was asserted.",
+          "sh:select": "PREFIX hev: <http://w3id.org/holon/event/>\nSELECT $this WHERE { $this a hev:AssertionEvent ; hev:assertedAt ?a ; hev:receivedAt ?r . FILTER (?a > ?r) }"
+        },
+        {
+          "@type": "sh:SPARQLConstraint",
+          "sh:message": "An event that records a fluent value must say what the value is.",
+          "sh:select": "PREFIX fl: <__H__vocab.jsonld#>\nSELECT $this WHERE { $this fl:fluent ?f . FILTER NOT EXISTS { $this fl:value ?v } }"
+        },
+        {
+          "@type": "sh:SPARQLConstraint",
+          "sh:message": "An event can only supersede an earlier event on the same fluent.",
+          "sh:select": "PREFIX fl: <__H__vocab.jsonld#>\nSELECT $this WHERE { $this fl:supersedes ?old ; fl:fluent ?f . FILTER NOT EXISTS { ?old fl:fluent ?f } }"
+        }
+      ]
     },
     {
       "@id": "__H__boundary.jsonld#FluentShape",
@@ -120,29 +159,9 @@
           "sh:path": {
             "@id": "fl:property"
           },
-          "sh:minCount": 1,
           "sh:maxCount": 1
         }
       ]
-    },
-    {
-      "@id": "__H__boundary.jsonld#HeartRateShape",
-      "@type": "sh:NodeShape",
-      "rdfs:label": "Resting heart rate reading",
-      "sh:property": {
-        "sh:path": {
-          "@id": "fl:value"
-        },
-        "sh:datatype": {
-          "@id": "xsd:integer"
-        },
-        "sh:minInclusive": 25,
-        "sh:maxInclusive": 220
-      },
-      "sh:targetClass": {
-        "@id": "hev:ObservationEvent"
-      },
-      "rdfs:comment": "Applies to the activity holon, whose only observations are resting heart rate readings."
     }
   ]
 }
