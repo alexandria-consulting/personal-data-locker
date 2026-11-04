@@ -29,13 +29,14 @@ for f in sorted(x for x in os.listdir(SAMPLES) if x.endswith(".jsonld")):
     text = open(os.path.join(SAMPLES, f)).read().replace("__H__", BASE).replace("__POD__", POD)
     g[f] = rdflib.Graph().parse(data=text, format="json-ld", base=BASE + f)
 
-# unified-care-model.ttl still uses https://w3.org/ns/ucm#; the shapes,
-# lifecycle vocabulary and ucm-codegen use urn:w3c:cg:ucm#.
-ucm = rdflib.Graph()
-ucm.parse(data=open(os.path.join(UCM, "unified-care-model.ttl")).read()
-          .replace("https://w3.org/ns/ucm#", "urn:w3c:cg:ucm#"), format="turtle")
-ucm.parse(os.path.join(UCM, "ucm-lifecycle-vocabularies.ttl"), format="turtle")
-ucm_shapes = rdflib.Graph().parse(os.path.join(UCM, "ucm-core-shapes.ttl"), format="turtle")
+# The data uses the ontology's namespace, https://w3.org/ns/ucm#. The shapes
+# and lifecycle vocabulary still use urn:w3c:cg:ucm#, so map them onto it.
+def ucm_file(name):
+    text = open(os.path.join(UCM, name)).read().replace("urn:w3c:cg:ucm#", "https://w3.org/ns/ucm#")
+    return rdflib.Graph().parse(data=text, format="turtle")
+
+ucm = ucm_file("unified-care-model.ttl") + ucm_file("ucm-lifecycle-vocabularies.ttl")
+ucm_shapes = ucm_file("ucm-core-shapes.ttl")
 
 failed = False
 for name, data, shapes, ont in [

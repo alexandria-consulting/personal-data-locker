@@ -71,10 +71,11 @@ Validation: the events conform to `boundary.jsonld`, and `care.jsonld` plus
 
 - The HGA drafts have no fluent terms yet, so `fl:` stands in for the pattern
   from "Fluents, Projections, and Observables".
-- UCM's namespace isn't settled: `unified-care-model.ttl` says
-  `https://w3.org/ns/ucm#`, while the shapes, lifecycle vocabulary and
-  `ucm-codegen` use `urn:w3c:cg:ucm#`. The data uses `urn:w3c:cg:ucm#`, so it
-  validates against the shapes.
+- The data uses UCM's ontology namespace, `https://w3.org/ns/ucm#`. The core
+  shapes and lifecycle vocabulary still use `urn:w3c:cg:ucm#`, so
+  `check-holon-sample.py` maps them onto `https://w3.org/ns/ucm#` before
+  validating. The holons' boundary links keep the shapes' published IRIs
+  (`urn:w3c:cg:ucm:shapes#…`).
 - UCM has no property for a reading's value, so each observation uses
   `rdf:value` and a LOINC code in `dcterms:type`.
 - Each graph is its own Solid resource rather than a named graph in one

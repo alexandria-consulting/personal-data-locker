@@ -4,7 +4,7 @@
     "holon": "http://w3id.org/holon/",
     "hev": "http://w3id.org/holon/event/",
     "hproj": "http://w3id.org/holon/projection/",
-    "ucm": "urn:w3c:cg:ucm#",
+    "ucm": "https://w3.org/ns/ucm#",
     "ucmsh": "urn:w3c:cg:ucm:shapes#",
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
