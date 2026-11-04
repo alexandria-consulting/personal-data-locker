@@ -1,0 +1,243 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "holon": "http://w3id.org/holon/",
+    "hev": "http://w3id.org/holon/event/",
+    "hproj": "http://w3id.org/holon/projection/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "sh": "http://www.w3.org/ns/shacl#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "schema": "https://schema.org/",
+    "fl": "__H__vocab.jsonld#"
+  },
+  "@graph": [
+    {
+      "@id": "__H__events.jsonld#profile-entry",
+      "@type": "prov:Activity",
+      "rdfs:label": "Billy enters profile details by hand"
+    },
+    {
+      "@id": "__H__events.jsonld#recompute-full-name",
+      "@type": "prov:Activity",
+      "rdfs:label": "Recompute the full-name observable"
+    },
+    {
+      "@id": "__H__events.jsonld#phone-sync",
+      "@type": "prov:Activity",
+      "rdfs:label": "Nightly sync from Billy's phone"
+    },
+    {
+      "@id": "__H__events.jsonld#billys-phone",
+      "@type": [
+        "prov:Agent",
+        "prov:SoftwareAgent"
+      ],
+      "rdfs:label": "Billy's phone health app",
+      "prov:actedOnBehalfOf": {
+        "@id": "__POD__profile/card.jsonld#me"
+      }
+    },
+    {
+      "@id": "__H__events.jsonld#e1",
+      "@type": "hev:AssertionEvent",
+      "hev:eventSequence": 1,
+      "hev:targetHolon": {
+        "@id": "__H__holon.jsonld#billy"
+      },
+      "fl:fluent": {
+        "@id": "__H__holon.jsonld#givenName"
+      },
+      "fl:value": "Billy",
+      "hev:assertedAt": {
+        "@value": "2026-10-30T12:00:00Z",
+        "@type": "xsd:dateTime"
+      },
+      "hev:receivedAt": {
+        "@value": "2026-10-30T12:00:02Z",
+        "@type": "xsd:dateTime"
+      },
+      "prov:wasGeneratedBy": {
+        "@id": "__H__events.jsonld#profile-entry"
+      },
+      "prov:wasAttributedTo": {
+        "@id": "__POD__profile/card.jsonld#me"
+      }
+    },
+    {
+      "@id": "__H__events.jsonld#e2",
+      "@type": "hev:AssertionEvent",
+      "hev:eventSequence": 2,
+      "hev:targetHolon": {
+        "@id": "__H__holon.jsonld#billy"
+      },
+      "fl:fluent": {
+        "@id": "__H__holon.jsonld#familyName"
+      },
+      "fl:value": "Testman",
+      "hev:assertedAt": {
+        "@value": "2026-10-30T12:00:00Z",
+        "@type": "xsd:dateTime"
+      },
+      "hev:receivedAt": {
+        "@value": "2026-10-30T12:00:02Z",
+        "@type": "xsd:dateTime"
+      },
+      "prov:wasGeneratedBy": {
+        "@id": "__H__events.jsonld#profile-entry"
+      },
+      "prov:wasAttributedTo": {
+        "@id": "__POD__profile/card.jsonld#me"
+      }
+    },
+    {
+      "@id": "__H__events.jsonld#e3",
+      "@type": "hev:AssertionEvent",
+      "hev:eventSequence": 3,
+      "hev:targetHolon": {
+        "@id": "__H__holon.jsonld#billy"
+      },
+      "fl:fluent": {
+        "@id": "__H__holon.jsonld#fullName"
+      },
+      "fl:value": "Billy Testman",
+      "hev:assertedAt": {
+        "@value": "2026-10-30T12:00:00Z",
+        "@type": "xsd:dateTime"
+      },
+      "hev:receivedAt": {
+        "@value": "2026-10-30T12:00:02Z",
+        "@type": "xsd:dateTime"
+      },
+      "prov:wasGeneratedBy": {
+        "@id": "__H__events.jsonld#recompute-full-name"
+      },
+      "prov:wasAttributedTo": {
+        "@id": "__POD__profile/card.jsonld#me"
+      },
+      "prov:wasDerivedFrom": [
+        {
+          "@id": "__H__events.jsonld#e1"
+        },
+        {
+          "@id": "__H__events.jsonld#e2"
+        }
+      ],
+      "hev:causedBy": {
+        "@id": "__H__events.jsonld#e2"
+      }
+    },
+    {
+      "@id": "__H__events.jsonld#e4",
+      "@type": "hev:AssertionEvent",
+      "hev:eventSequence": 4,
+      "hev:targetHolon": {
+        "@id": "__H__holon.jsonld#billy"
+      },
+      "fl:fluent": {
+        "@id": "__H__holon.jsonld#homeLocation"
+      },
+      "fl:value": "Portland, Oregon",
+      "hev:assertedAt": {
+        "@value": "2024-03-01T00:00:00Z",
+        "@type": "xsd:dateTime"
+      },
+      "hev:receivedAt": {
+        "@value": "2026-10-30T12:05:00Z",
+        "@type": "xsd:dateTime"
+      },
+      "prov:wasGeneratedBy": {
+        "@id": "__H__events.jsonld#profile-entry"
+      },
+      "prov:wasAttributedTo": {
+        "@id": "__POD__profile/card.jsonld#me"
+      }
+    },
+    {
+      "@id": "__H__events.jsonld#e5",
+      "@type": "hev:AssertionEvent",
+      "hev:eventSequence": 5,
+      "hev:targetHolon": {
+        "@id": "__H__holon.jsonld#billy"
+      },
+      "fl:fluent": {
+        "@id": "__H__holon.jsonld#homeLocation"
+      },
+      "fl:value": "Asheville, North Carolina",
+      "hev:assertedAt": {
+        "@value": "2026-08-15T00:00:00Z",
+        "@type": "xsd:dateTime"
+      },
+      "hev:receivedAt": {
+        "@value": "2026-10-30T12:05:30Z",
+        "@type": "xsd:dateTime"
+      },
+      "prov:wasGeneratedBy": {
+        "@id": "__H__events.jsonld#profile-entry"
+      },
+      "prov:wasAttributedTo": {
+        "@id": "__POD__profile/card.jsonld#me"
+      },
+      "fl:supersedes": {
+        "@id": "__H__events.jsonld#e4"
+      }
+    },
+    {
+      "@id": "__H__events.jsonld#e6",
+      "@type": "hev:ObservationEvent",
+      "hev:eventSequence": 6,
+      "hev:targetHolon": {
+        "@id": "__H__holon.jsonld#billy-activity"
+      },
+      "fl:fluent": {
+        "@id": "__H__holon.jsonld#restingHeartRate"
+      },
+      "fl:value": 64,
+      "hev:assertedAt": {
+        "@value": "2026-11-01T07:00:00Z",
+        "@type": "xsd:dateTime"
+      },
+      "hev:receivedAt": {
+        "@value": "2026-11-02T03:00:00Z",
+        "@type": "xsd:dateTime"
+      },
+      "prov:wasGeneratedBy": {
+        "@id": "__H__events.jsonld#phone-sync"
+      },
+      "prov:wasAttributedTo": {
+        "@id": "__H__events.jsonld#billys-phone"
+      }
+    },
+    {
+      "@id": "__H__events.jsonld#e7",
+      "@type": "hev:ObservationEvent",
+      "hev:eventSequence": 7,
+      "hev:targetHolon": {
+        "@id": "__H__holon.jsonld#billy-activity"
+      },
+      "fl:fluent": {
+        "@id": "__H__holon.jsonld#restingHeartRate"
+      },
+      "fl:value": 61,
+      "hev:assertedAt": {
+        "@value": "2026-11-02T07:00:00Z",
+        "@type": "xsd:dateTime"
+      },
+      "hev:receivedAt": {
+        "@value": "2026-11-03T03:00:00Z",
+        "@type": "xsd:dateTime"
+      },
+      "prov:wasGeneratedBy": {
+        "@id": "__H__events.jsonld#phone-sync"
+      },
+      "prov:wasAttributedTo": {
+        "@id": "__H__events.jsonld#billys-phone"
+      },
+      "fl:supersedes": {
+        "@id": "__H__events.jsonld#e6"
+      }
+    }
+  ]
+}

@@ -1,0 +1,137 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "holon": "http://w3id.org/holon/",
+    "hev": "http://w3id.org/holon/event/",
+    "hproj": "http://w3id.org/holon/projection/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "sh": "http://www.w3.org/ns/shacl#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "schema": "https://schema.org/",
+    "fl": "__H__vocab.jsonld#"
+  },
+  "@graph": [
+    {
+      "@id": "__H__vocab.jsonld",
+      "@type": "owl:Ontology",
+      "rdfs:label": "Fluent vocabulary for Billy's holon (illustrative)",
+      "rdfs:comment": "Local stand-in for the fluent/event pattern described in Kurt Cagle's 'Fluents, Projections, and Observables' and 'A Holon Is a Recorder'. The W3C Holon CG drafts do not define these terms yet; replace with the CG's terms once published.",
+      "dcterms:source": [
+        {
+          "@id": "https://inferenceengineer.substack.com/p/fluents-projections-and-observables"
+        },
+        {
+          "@id": "https://inferenceengineer.substack.com/p/a-holon-is-a-recorder"
+        }
+      ]
+    },
+    {
+      "@id": "fl:Fluent",
+      "@type": "owl:Class",
+      "rdfs:label": "Fluent",
+      "rdfs:isDefinedBy": {
+        "@id": "__H__vocab.jsonld"
+      },
+      "rdfs:comment": "A stable node standing for 'the current value of this varying thing', backed by an append-only stream of events."
+    },
+    {
+      "@id": "fl:Observable",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": {
+        "@id": "fl:Fluent"
+      },
+      "rdfs:label": "Observable",
+      "rdfs:isDefinedBy": {
+        "@id": "__H__vocab.jsonld"
+      },
+      "rdfs:comment": "A fluent whose value is derived from other fluents and recomputed when any of them changes."
+    },
+    {
+      "@id": "fl:hasFluent",
+      "@type": "owl:ObjectProperty",
+      "rdfs:label": "has fluent",
+      "rdfs:comment": "Links a holon to a fluent it tracks.",
+      "rdfs:isDefinedBy": {
+        "@id": "__H__vocab.jsonld"
+      }
+    },
+    {
+      "@id": "fl:subject",
+      "@type": "owl:ObjectProperty",
+      "rdfs:label": "subject",
+      "rdfs:comment": "The resource the fluent describes.",
+      "rdfs:isDefinedBy": {
+        "@id": "__H__vocab.jsonld"
+      }
+    },
+    {
+      "@id": "fl:property",
+      "@type": "owl:ObjectProperty",
+      "rdfs:label": "property",
+      "rdfs:comment": "The property whose current value the fluent stands for; the scene graph materialises it as (subject, property, current value).",
+      "rdfs:isDefinedBy": {
+        "@id": "__H__vocab.jsonld"
+      }
+    },
+    {
+      "@id": "fl:fluent",
+      "@type": "owl:ObjectProperty",
+      "rdfs:label": "fluent",
+      "rdfs:comment": "The fluent an event records a value for.",
+      "rdfs:isDefinedBy": {
+        "@id": "__H__vocab.jsonld"
+      }
+    },
+    {
+      "@id": "fl:value",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "value",
+      "rdfs:comment": "The value the event records for its fluent.",
+      "rdfs:isDefinedBy": {
+        "@id": "__H__vocab.jsonld"
+      }
+    },
+    {
+      "@id": "fl:supersedes",
+      "@type": "owl:ObjectProperty",
+      "rdfs:label": "supersedes",
+      "rdfs:comment": "The earlier event on the same fluent that this event replaces. Written on the new event so the history stays append-only.",
+      "rdfs:isDefinedBy": {
+        "@id": "__H__vocab.jsonld"
+      }
+    },
+    {
+      "@id": "fl:observes",
+      "@type": "owl:ObjectProperty",
+      "rdfs:label": "observes",
+      "rdfs:comment": "A fluent an observable is computed from.",
+      "rdfs:isDefinedBy": {
+        "@id": "__H__vocab.jsonld"
+      }
+    },
+    {
+      "@id": "fl:headEvent",
+      "@type": "owl:ObjectProperty",
+      "rdfs:label": "head event",
+      "rdfs:comment": "The event currently holding the fluent: the latest one nothing supersedes.",
+      "rdfs:isDefinedBy": {
+        "@id": "__H__vocab.jsonld"
+      }
+    },
+    {
+      "@id": "fl:restingHeartRate",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "resting heart rate",
+      "rdfs:comment": "Resting heart rate in beats per minute.",
+      "rdfs:range": {
+        "@id": "xsd:integer"
+      },
+      "rdfs:isDefinedBy": {
+        "@id": "__H__vocab.jsonld"
+      }
+    }
+  ]
+}

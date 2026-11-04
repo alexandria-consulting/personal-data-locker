@@ -1,0 +1,56 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "holon": "http://w3id.org/holon/",
+    "hev": "http://w3id.org/holon/event/",
+    "hproj": "http://w3id.org/holon/projection/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "sh": "http://www.w3.org/ns/shacl#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "schema": "https://schema.org/",
+    "fl": "__H__vocab.jsonld#"
+  },
+  "@graph": [
+    {
+      "@id": "__H__holon.jsonld#billy",
+      "schema:givenName": "Billy",
+      "schema:familyName": "Testman",
+      "schema:name": "Billy Testman",
+      "schema:homeLocation": "Asheville, North Carolina",
+      "fl:restingHeartRate": 61
+    },
+    {
+      "@id": "__H__holon.jsonld#givenName",
+      "fl:headEvent": {
+        "@id": "__H__events.jsonld#e1"
+      }
+    },
+    {
+      "@id": "__H__holon.jsonld#familyName",
+      "fl:headEvent": {
+        "@id": "__H__events.jsonld#e2"
+      }
+    },
+    {
+      "@id": "__H__holon.jsonld#fullName",
+      "fl:headEvent": {
+        "@id": "__H__events.jsonld#e3"
+      }
+    },
+    {
+      "@id": "__H__holon.jsonld#homeLocation",
+      "fl:headEvent": {
+        "@id": "__H__events.jsonld#e5"
+      }
+    },
+    {
+      "@id": "__H__holon.jsonld#restingHeartRate",
+      "fl:headEvent": {
+        "@id": "__H__events.jsonld#e7"
+      }
+    }
+  ]
+}

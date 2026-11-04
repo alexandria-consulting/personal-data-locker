@@ -18,7 +18,7 @@ else
 BIND := 127.0.0.1:4443:4443
 endif
 
-.PHONY: build up down restart logs status shell reset rebuild caddy-validate grant-webid create-pod
+.PHONY: build up down restart logs status shell reset rebuild caddy-validate grant-webid create-pod upload-holon-sample
 
 build:
 	podman build -t $(IMAGE) jss
@@ -71,3 +71,8 @@ create-pod:
 # Usage: make grant-webid POD=test CONTAINER=private WEBID=https://... [EMAIL=... PASSWORD=...]
 grant-webid:
 	scripts/grant-webid.sh "$(POD)" "$(CONTAINER)" "$(WEBID)"
+
+# Upload the holonic sample dataset (samples/holon/) to a pod's /holon/ container.
+# Usage: make upload-holon-sample POD=billy
+upload-holon-sample:
+	scripts/upload-holon-sample.sh "$(POD)"

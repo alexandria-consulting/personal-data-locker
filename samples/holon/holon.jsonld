@@ -1,0 +1,158 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "holon": "http://w3id.org/holon/",
+    "hev": "http://w3id.org/holon/event/",
+    "hproj": "http://w3id.org/holon/projection/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "sh": "http://www.w3.org/ns/shacl#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "schema": "https://schema.org/",
+    "fl": "__H__vocab.jsonld#"
+  },
+  "@graph": [
+    {
+      "@id": "__H__holon.jsonld#billy",
+      "@type": "holon:AgentHolon",
+      "rdfs:label": "Billy",
+      "dcterms:description": "Billy's personal data holon: identity and home details, with an activity holon nested inside.",
+      "dcterms:subject": {
+        "@id": "__POD__profile/card.jsonld#me"
+      },
+      "holon:registrationStatus": {
+        "@id": "holon:CandidateStatus"
+      },
+      "holon:payloadGraph": {
+        "@value": "__H__events.jsonld",
+        "@type": "xsd:anyURI"
+      },
+      "holon:boundary": [
+        {
+          "@id": "__H__boundary.jsonld#EventShape"
+        },
+        {
+          "@id": "__H__boundary.jsonld#FluentShape"
+        }
+      ],
+      "holon:boundaryMode": {
+        "@id": "holon:ClosedBoundary"
+      },
+      "holon:contains": {
+        "@id": "__H__holon.jsonld#billy-activity"
+      },
+      "fl:hasFluent": [
+        {
+          "@id": "__H__holon.jsonld#givenName"
+        },
+        {
+          "@id": "__H__holon.jsonld#familyName"
+        },
+        {
+          "@id": "__H__holon.jsonld#fullName"
+        },
+        {
+          "@id": "__H__holon.jsonld#homeLocation"
+        }
+      ]
+    },
+    {
+      "@id": "__H__holon.jsonld#billy-activity",
+      "@type": "holon:DataHolon",
+      "rdfs:label": "Billy's activity data",
+      "dcterms:description": "Readings synced from Billy's phone.",
+      "holon:registrationStatus": {
+        "@id": "holon:CandidateStatus"
+      },
+      "holon:partOf": {
+        "@id": "__H__holon.jsonld#billy"
+      },
+      "holon:payloadGraph": {
+        "@value": "__H__events.jsonld",
+        "@type": "xsd:anyURI"
+      },
+      "holon:boundary": [
+        {
+          "@id": "__H__boundary.jsonld#EventShape"
+        },
+        {
+          "@id": "__H__boundary.jsonld#HeartRateShape"
+        }
+      ],
+      "holon:boundaryMode": {
+        "@id": "holon:ClosedBoundary"
+      },
+      "fl:hasFluent": {
+        "@id": "__H__holon.jsonld#restingHeartRate"
+      }
+    },
+    {
+      "@id": "__H__holon.jsonld#givenName",
+      "@type": "fl:Fluent",
+      "rdfs:label": "Billy's given name",
+      "fl:subject": {
+        "@id": "__H__holon.jsonld#billy"
+      },
+      "fl:property": {
+        "@id": "schema:givenName"
+      }
+    },
+    {
+      "@id": "__H__holon.jsonld#familyName",
+      "@type": "fl:Fluent",
+      "rdfs:label": "Billy's family name",
+      "fl:subject": {
+        "@id": "__H__holon.jsonld#billy"
+      },
+      "fl:property": {
+        "@id": "schema:familyName"
+      }
+    },
+    {
+      "@id": "__H__holon.jsonld#fullName",
+      "@type": [
+        "fl:Fluent",
+        "fl:Observable"
+      ],
+      "rdfs:label": "Billy's full name",
+      "fl:subject": {
+        "@id": "__H__holon.jsonld#billy"
+      },
+      "fl:property": {
+        "@id": "schema:name"
+      },
+      "fl:observes": [
+        {
+          "@id": "__H__holon.jsonld#givenName"
+        },
+        {
+          "@id": "__H__holon.jsonld#familyName"
+        }
+      ]
+    },
+    {
+      "@id": "__H__holon.jsonld#homeLocation",
+      "@type": "fl:Fluent",
+      "rdfs:label": "Billy's home city",
+      "fl:subject": {
+        "@id": "__H__holon.jsonld#billy"
+      },
+      "fl:property": {
+        "@id": "schema:homeLocation"
+      }
+    },
+    {
+      "@id": "__H__holon.jsonld#restingHeartRate",
+      "@type": "fl:Fluent",
+      "rdfs:label": "Billy's resting heart rate (bpm)",
+      "fl:subject": {
+        "@id": "__H__holon.jsonld#billy"
+      },
+      "fl:property": {
+        "@id": "fl:restingHeartRate"
+      }
+    }
+  ]
+}
