@@ -5,7 +5,6 @@
     "hev": "http://w3id.org/holon/event/",
     "hproj": "http://w3id.org/holon/projection/",
     "ucm": "https://w3.org/ns/ucm#",
-    "ucmsh": "urn:w3c:cg:ucm:shapes#",
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "owl": "http://www.w3.org/2002/07/owl#",
@@ -20,7 +19,7 @@
       "@id": "__H__boundary.jsonld#EventShape",
       "@type": "sh:NodeShape",
       "rdfs:label": "Event boundary",
-      "rdfs:comment": "Every event entering Billy's holons names its holon and payload, carries both bitemporal timestamps, and says what produced it. Payload content is validated by the UCM core shapes (ucmsh:*), published at https://github.com/w3c-cg/ucm/blob/main/ucm-core-shapes.ttl.",
+      "rdfs:comment": "Every event entering Billy's holons names its holon and payload, carries both bitemporal timestamps, and says what produced it. Payload content is validated by the UCM core shapes (ucm:*Shape), published at https://github.com/w3c-cg/ucm/blob/main/ucm-core-shapes.ttl.",
       "sh:targetClass": [
         {
           "@id": "hev:AssertionEvent"

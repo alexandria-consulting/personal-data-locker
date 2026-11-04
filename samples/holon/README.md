@@ -46,7 +46,7 @@ already has.
 | `care.jsonld` | payload graph | UCM entities, contexts, processes, participations and statements. Nothing in it changes; changing values live in fluents |
 | `events.jsonld` | event (history) graph | 9 append-only `hev:` events with `hev:assertedAt` / `hev:receivedAt`, PROV-O provenance, payload pointers into `care.jsonld`, and fluent values with supersession |
 | `scene.jsonld` | scene / now graph | Current value of each fluent, materialised as UCM triples (`ucm:locatedAt`, `ucm:hasLifecycleState`) |
-| `boundary.jsonld` | boundary | SHACL shapes for events. The holons also name UCM's own core shapes (`ucmsh:ParticipationShape`, `ucmsh:StatementShape`) as their boundary |
+| `boundary.jsonld` | boundary | SHACL shapes for events. The holons also name UCM's own core shapes (`ucm:ParticipationShape`, `ucm:StatementShape`) as their boundary |
 | `projection.jsonld` | projection | `hproj:NowGraph` envelope pointing at the scene and event graphs |
 | `vocab.jsonld` | (vocabulary) | Local `fl:` terms for fluents, events and observables |
 
@@ -71,11 +71,12 @@ Validation: the events conform to `boundary.jsonld`, and `care.jsonld` plus
 
 - The HGA drafts have no fluent terms yet, so `fl:` stands in for the pattern
   from "Fluents, Projections, and Observables".
-- The data uses UCM's ontology namespace, `https://w3.org/ns/ucm#`. The core
-  shapes and lifecycle vocabulary still use `urn:w3c:cg:ucm#`, so
-  `check-holon-sample.py` maps them onto `https://w3.org/ns/ucm#` before
-  validating. The holons' boundary links keep the shapes' published IRIs
-  (`urn:w3c:cg:ucm:shapes#…`).
+- Everything UCM uses the `https://w3.org/ns/ucm#` namespace, including the
+  holons' boundary links to UCM's shapes (`ucm:ParticipationShape`,
+  `ucm:StatementShape`). The published core shapes and lifecycle vocabulary
+  still use `urn:w3c:cg:ucm#` and `urn:w3c:cg:ucm:shapes#`, so
+  `check-holon-sample.py` maps both onto `https://w3.org/ns/ucm#` before
+  validating, and checks that each linked shape exists.
 - UCM has no property for a reading's value, so each observation uses
   `rdf:value` and a LOINC code in `dcterms:type`.
 - Each graph is its own Solid resource rather than a named graph in one
