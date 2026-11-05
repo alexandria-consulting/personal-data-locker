@@ -12,7 +12,7 @@
     "sh": "http://www.w3.org/ns/shacl#",
     "prov": "http://www.w3.org/ns/prov#",
     "dcterms": "http://purl.org/dc/terms/",
-    "fl": "__H__vocab.jsonld#"
+    "fl": "__H__fluent-vocab.jsonld#"
   },
   "@id": "__H__home-monitoring/event.jsonld",
   "@graph": [

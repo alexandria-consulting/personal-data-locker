@@ -55,7 +55,7 @@ find . -name '*.jsonld' | sort | while read -r f; do
 done
 
 # Each graph must come back still named after its own URL.
-find . -name '*.jsonld' ! -name vocab.jsonld | sort | while read -r f; do
+find . -name '*.jsonld' ! -name fluent-vocab.jsonld | sort | while read -r f; do
   rel=${f#./}
   curl -fsS "$BASE$rel" -H "Authorization: Bearer $TOKEN" -H 'Accept: application/ld+json' \
     | jq -e --arg id "$BASE$rel" '.["@id"] == $id' >/dev/null \

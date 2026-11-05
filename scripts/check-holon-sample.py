@@ -76,7 +76,7 @@ def ucm_file(name):
 
 ucm = ucm_file("unified-care-model.ttl") + ucm_file("ucm-lifecycle-vocabularies.ttl")
 ucm_shapes = ucm_file("ucm-core-shapes.ttl")
-vocab = load("vocab.jsonld")
+vocab = load("fluent-vocab.jsonld")
 vocab_graph = rdflib.Graph()
 for s, p, o, _ in vocab.quads():
     vocab_graph.add((s, p, o))

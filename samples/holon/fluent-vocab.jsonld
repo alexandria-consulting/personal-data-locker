@@ -12,11 +12,11 @@
     "sh": "http://www.w3.org/ns/shacl#",
     "prov": "http://www.w3.org/ns/prov#",
     "dcterms": "http://purl.org/dc/terms/",
-    "fl": "__H__vocab.jsonld#"
+    "fl": "__H__fluent-vocab.jsonld#"
   },
   "@graph": [
     {
-      "@id": "__H__vocab.jsonld",
+      "@id": "__H__fluent-vocab.jsonld",
       "@type": "owl:Ontology",
       "rdfs:label": "Fluent vocabulary for Billy's holons (illustrative)",
       "rdfs:comment": "Local stand-in for the fluent pattern in Kurt Cagle's 'Fluents, Projections, and Observables' and 'A Holon Is a Recorder'. The W3C Holon CG drafts do not define fluent terms yet; replace these once they do.",
@@ -34,7 +34,7 @@
       "@type": "owl:Class",
       "rdfs:label": "Fluent",
       "rdfs:isDefinedBy": {
-        "@id": "__H__vocab.jsonld"
+        "@id": "__H__fluent-vocab.jsonld"
       },
       "rdfs:comment": "A stable node standing for 'the current value of this varying thing', backed by an append-only stream of events."
     },
@@ -46,7 +46,7 @@
       },
       "rdfs:label": "Observable",
       "rdfs:isDefinedBy": {
-        "@id": "__H__vocab.jsonld"
+        "@id": "__H__fluent-vocab.jsonld"
       },
       "rdfs:comment": "A fluent whose value is derived from other fluents and recomputed when any of them changes."
     },
@@ -56,7 +56,7 @@
       "rdfs:label": "has fluent",
       "rdfs:comment": "Links a holon to a fluent it tracks.",
       "rdfs:isDefinedBy": {
-        "@id": "__H__vocab.jsonld"
+        "@id": "__H__fluent-vocab.jsonld"
       }
     },
     {
@@ -65,7 +65,7 @@
       "rdfs:label": "subject",
       "rdfs:comment": "The resource the fluent describes.",
       "rdfs:isDefinedBy": {
-        "@id": "__H__vocab.jsonld"
+        "@id": "__H__fluent-vocab.jsonld"
       }
     },
     {
@@ -74,7 +74,7 @@
       "rdfs:label": "property",
       "rdfs:comment": "The property the fluent stands for, if any. The scene graph materialises (subject, property, current value) as an ordinary triple, so no graph holds two current values for a single-valued property.",
       "rdfs:isDefinedBy": {
-        "@id": "__H__vocab.jsonld"
+        "@id": "__H__fluent-vocab.jsonld"
       }
     },
     {
@@ -83,7 +83,7 @@
       "rdfs:label": "fluent",
       "rdfs:comment": "The fluent an event records a value for.",
       "rdfs:isDefinedBy": {
-        "@id": "__H__vocab.jsonld"
+        "@id": "__H__fluent-vocab.jsonld"
       }
     },
     {
@@ -92,7 +92,7 @@
       "rdfs:label": "value",
       "rdfs:comment": "The value the event records for its fluent: a literal or a node.",
       "rdfs:isDefinedBy": {
-        "@id": "__H__vocab.jsonld"
+        "@id": "__H__fluent-vocab.jsonld"
       }
     },
     {
@@ -101,7 +101,7 @@
       "rdfs:label": "supersedes",
       "rdfs:comment": "The earlier event on the same fluent that this event replaces. Written on the new event so the history stays append-only.",
       "rdfs:isDefinedBy": {
-        "@id": "__H__vocab.jsonld"
+        "@id": "__H__fluent-vocab.jsonld"
       }
     },
     {
@@ -110,7 +110,7 @@
       "rdfs:label": "observes",
       "rdfs:comment": "A fluent an observable is computed from.",
       "rdfs:isDefinedBy": {
-        "@id": "__H__vocab.jsonld"
+        "@id": "__H__fluent-vocab.jsonld"
       }
     },
     {
@@ -119,7 +119,7 @@
       "rdfs:label": "head event",
       "rdfs:comment": "The event currently holding the fluent: the latest one nothing supersedes.",
       "rdfs:isDefinedBy": {
-        "@id": "__H__vocab.jsonld"
+        "@id": "__H__fluent-vocab.jsonld"
       }
     },
     {
@@ -128,7 +128,7 @@
       "rdfs:label": "current value",
       "rdfs:comment": "The fluent's value as of its head event.",
       "rdfs:isDefinedBy": {
-        "@id": "__H__vocab.jsonld"
+        "@id": "__H__fluent-vocab.jsonld"
       }
     }
   ]

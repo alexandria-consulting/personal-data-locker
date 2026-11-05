@@ -51,7 +51,7 @@ nest the way the holons do:
 ```
 holon/                     Billy's personal data locker
   scene.jsonld  boundary.jsonld  event.jsonld  projection.jsonld
-  vocab.jsonld             shared fl: vocabulary, not part of any holon
+  fluent-vocab.jsonld      shared fl: vocabulary, not part of any holon
   home-monitoring/         Billy's home monitoring
     scene.jsonld  boundary.jsonld  event.jsonld  projection.jsonld
   food-security/           Billy's food security coordination
@@ -67,6 +67,34 @@ triples are in `@graph`.
 | `event.jsonld` | Append-only `hev:` events with `hev:assertedAt` / `hev:receivedAt`, PROV-O provenance and fluent values, plus the UCM processes, participations and statements each event introduced |
 | `scene.jsonld` | What's current: the UCM nodes still in force, each fluent's head event and value, and ordinary triples for fluents that stand for a property (`ucm:locatedAt`, `ucm:hasLifecycleState`) |
 | `projection.jsonld` | An `hproj:NowGraph` envelope pointing at the holon's scene and event graphs |
+
+## The fluent vocabulary
+
+`fluent-vocab.jsonld` defines the `fl:` terms the holons use to record values
+that change over time. Cagle's "Fluents, Projections, and Observables" and "A
+Holon Is a Recorder" describe this pattern, but the W3C Holon CG's HGA drafts
+don't define terms for it yet, so this file is a local stand-in. Replace `fl:`
+with the CG's terms once they're published.
+
+It's a shared definition rather than data about Billy, so it sits beside the
+holons, outside all four of their graphs. It's the only `.jsonld` file here that
+isn't a named graph. Its terms' IRIs are under the file's own URL, so on this
+server `fl:Fluent` is
+`http://localhost:4443/billy/holon/fluent-vocab.jsonld#Fluent`.
+
+| Term | Used in | Meaning |
+| --- | --- | --- |
+| `fl:Fluent` | boundary | A stable node standing for the current value of something that varies, backed by an append-only stream of events |
+| `fl:Observable` | boundary | A fluent derived from other fluents and recomputed when any of them changes |
+| `fl:hasFluent` | boundary | Links a holon to a fluent it tracks |
+| `fl:subject` | boundary | The resource the fluent describes |
+| `fl:property` | boundary | The property the fluent stands for, if any; the scene graph then states it as an ordinary triple |
+| `fl:observes` | boundary | A fluent an observable is computed from |
+| `fl:fluent` | event | The fluent an event records a value for |
+| `fl:value` | event | The value the event records |
+| `fl:supersedes` | event | The earlier event on the same fluent that this event replaces, written on the new event so the history stays append-only |
+| `fl:headEvent` | scene | The event currently holding the fluent: the latest one nothing supersedes |
+| `fl:currentValue` | scene | The fluent's value as of its head event |
 
 ## Viewing what's in the pod
 
@@ -94,11 +122,11 @@ curl -s http://localhost:4443/billy/holon/ -H "Authorization: Bearer $TOKEN" | j
 ```text
 http://localhost:4443/billy/holon/boundary.jsonld
 http://localhost:4443/billy/holon/event.jsonld
+http://localhost:4443/billy/holon/fluent-vocab.jsonld
 http://localhost:4443/billy/holon/food-security/
 http://localhost:4443/billy/holon/home-monitoring/
 http://localhost:4443/billy/holon/projection.jsonld
 http://localhost:4443/billy/holon/scene.jsonld
-http://localhost:4443/billy/holon/vocab.jsonld
 ```
 
 The same command works on any container. Use `/billy/` for the pod root, or add
