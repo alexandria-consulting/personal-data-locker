@@ -18,7 +18,7 @@ The sources name a holon's graphs differently. This dataset uses four named
 graphs per holon: **scene**, **boundary**, **event** and **projection**. Every
 other common name maps onto one of them:
 
-| Graph here | Name in a source | Where it's used | Definition |
+| Graph here | Name in a source | Described at* | Definition |
 | --- | --- | --- | --- |
 | **Scene** | Scene graph | ["The Holonic Graph"](https://inferenceengineer.substack.com/p/the-holonic-graph-a-new-architecture), ["The Holon's Accountant"](https://inferenceengineer.substack.com/p/the-holons-accountant) | What this is right now: current assertional state, with one current value per fluent |
 | | Now graph | ["The Holonic Graph"](https://inferenceengineer.substack.com/p/the-holonic-graph-a-new-architecture), ["The Holon's Accountant"](https://inferenceengineer.substack.com/p/the-holons-accountant) | A view of current state derived from the history |
@@ -30,6 +30,8 @@ other common name maps onto one of them:
 | | Context graph | ["The Holonic Graph"](https://inferenceengineer.substack.com/p/the-holonic-graph-a-new-architecture), [W3C Holon CG](https://www.w3.org/community/holon/) | For whom, when and why something means what it means: author, time, authority, purpose, confidence |
 | | History graph | ["The Holonic Graph"](https://inferenceengineer.substack.com/p/the-holonic-graph-a-new-architecture) | Append-only, never retracted: the ground truth of events |
 | **Projection** | Projection | [W3C Holon CG](https://www.w3.org/community/holon/), [HGA `hproj:`](https://github.com/w3c-cg/holon/blob/main/architectures/hga/hga-pass-e-projection.databook.md) | A read-only map of the system, exposed outward |
+*special credit to [Kurt Cagle's Inference Engineer Substack column](https://inferenceengineer.substack.com)
+
 
 Two names are not one of the four:
 
