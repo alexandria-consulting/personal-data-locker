@@ -12,7 +12,7 @@
     "sh": "http://www.w3.org/ns/shacl#",
     "prov": "http://www.w3.org/ns/prov#",
     "dcterms": "http://purl.org/dc/terms/",
-    "fl": "__H__vocab.jsonld#"
+    "fl": "__H__fluent-vocab.jsonld#"
   },
   "@id": "__H__boundary.jsonld",
   "@graph": [
@@ -239,12 +239,12 @@
         {
           "@type": "sh:SPARQLConstraint",
           "sh:message": "An event that records a fluent value must say what the value is.",
-          "sh:select": "PREFIX fl: <__H__vocab.jsonld#>\nSELECT $this WHERE { $this fl:fluent ?f . FILTER NOT EXISTS { $this fl:value ?v } }"
+          "sh:select": "PREFIX fl: <__H__fluent-vocab.jsonld#>\nSELECT $this WHERE { $this fl:fluent ?f . FILTER NOT EXISTS { $this fl:value ?v } }"
         },
         {
           "@type": "sh:SPARQLConstraint",
           "sh:message": "An event can only supersede an earlier event on the same fluent.",
-          "sh:select": "PREFIX fl: <__H__vocab.jsonld#>\nSELECT $this WHERE { $this fl:supersedes ?old ; fl:fluent ?f . FILTER NOT EXISTS { ?old fl:fluent ?f } }"
+          "sh:select": "PREFIX fl: <__H__fluent-vocab.jsonld#>\nSELECT $this WHERE { $this fl:supersedes ?old ; fl:fluent ?f . FILTER NOT EXISTS { ?old fl:fluent ?f } }"
         }
       ]
     },
