@@ -2,7 +2,7 @@
 
 A contained development install of the [JavaScript Solid Server](https://jss.live/)
 (npm `javascript-solid-server`). Everything runs inside a Podman pod; nothing is
-installed on the host except Podman (and, optionally, Caddy for HTTPS).
+installed on the host except Podman (and, optionally, Caddy for HTTPS). This documentation also demonstrates how to load some data into the Pod for a fake person named "Billy", following the W3C Unified Care Model Community Group's data standard [https://www.w3.org/community/ucm](https://www.w3.org/community/ucm) and [https://github.com/w3c-cg/ucm](https://github.com/w3c-cg/ucm).
 
 ## Contents
 
