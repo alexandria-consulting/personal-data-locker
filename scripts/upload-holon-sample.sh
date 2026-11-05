@@ -44,14 +44,21 @@ TOKEN=$(jq -n --arg e "$EMAIL" --arg p "$PASSWORD" '{email: $e, password: $p}' \
 [ -n "$TOKEN" ] && [ "$TOKEN" != null ] || { echo "Login failed for $EMAIL" >&2; exit 1; }
 
 # Templates use __POD__ for the pod root and __H__ for the target container.
-for f in "$SAMPLES"/*.jsonld; do
-  name=$(basename "$f")
-  sed -e "s|__H__|$BASE|g" -e "s|__POD__|$POD_URL|g" "$f" \
-    | curl -fsS -o /dev/null -w "PUT $BASE$name -> %{http_code}\n" \
-      -X PUT "$BASE$name" -H "Authorization: Bearer $TOKEN" \
+# Each holon is a nested container of named graphs, so walk the whole tree.
+cd "$SAMPLES"
+find . -name '*.jsonld' | sort | while read -r f; do
+  rel=${f#./}
+  sed -e "s|__H__|$BASE|g" -e "s|__POD__|$POD_URL|g" "$rel" \
+    | curl -fsS -o /dev/null -w "PUT $BASE$rel -> %{http_code}\n" \
+      -X PUT "$BASE$rel" -H "Authorization: Bearer $TOKEN" \
       -H 'Content-Type: application/ld+json' --data-binary @-
 done
 
-echo "Current state ($BASE""scene.jsonld):"
-curl -fsS "${BASE}scene.jsonld" -H "Authorization: Bearer $TOKEN" -H 'Accept: application/ld+json' \
-  | jq '.["@graph"][0]? // .'
+# Each graph must come back still named after its own URL.
+find . -name '*.jsonld' ! -name vocab.jsonld | sort | while read -r f; do
+  rel=${f#./}
+  curl -fsS "$BASE$rel" -H "Authorization: Bearer $TOKEN" -H 'Accept: application/ld+json' \
+    | jq -e --arg id "$BASE$rel" '.["@id"] == $id' >/dev/null \
+    && echo "named graph OK: $BASE$rel" \
+    || { echo "NOT a named graph on the server: $BASE$rel" >&2; exit 1; }
+done

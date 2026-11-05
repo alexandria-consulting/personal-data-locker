@@ -3,56 +3,74 @@
 A small, made-up dataset for the `billy` pod. Its structure follows Kurt
 Cagle's holonic graph architecture: the W3C Holon Graph Community Group's
 [HGA drafts](https://github.com/w3c-cg/holon/tree/main/architectures/hga)
-and his posts in [The Inference Engineer](https://inferenceengineer.substack.com/)
-("The Holonic Graph", "Fluents, Projections, and Observables",
-"The Holon's Accountant", "A Holon Is a Recorder"). Its content uses the
-[Unified Care Model](https://github.com/w3c-cg/ucm) and fits the world of
-UCM's care-team user stories.
+and his posts in [The Inference Engineer](https://inferenceengineer.substack.com/).
+Its content uses the [Unified Care Model](https://github.com/w3c-cg/ucm) and
+fits the world of UCM's care-team user stories. [personas.md](personas.md)
+describes who the data is about and what happens.
 
 Upload with `make upload-holon-sample POD=billy` (goes to `/billy/holon/`).
 `__POD__` and `__H__` in the files are replaced with the pod and container URLs.
 Check it first with `scripts/check-holon-sample.py <path to a ucm checkout>`.
 
-## The story
+## Holon graph names
 
-Billy Testman is another client of the Eastside Neighbors team from UCM's
-[nutrition story](https://github.com/w3c-cg/ucm/blob/main/user-stories/care-team-coordination-nutrition.md).
-His pod is his own copy of his care.
+The sources name a holon's graphs differently. This dataset uses four named
+graphs per holon: **scene**, **boundary**, **event** and **projection**. Every
+other common name maps onto one of them:
 
-1. Samuel Whitfield screens Billy for food insecurity (`SocialCareInteraction`
-   with Billy in a `ClientRole`). His `SocialCareStatement`: Billy runs out of
-   food before the end of each month.
-2. Samuel opens a `CareCoordinationInteraction` with the `ActivityFocus` food
-   security, with Billy in a `BeneficiaryRole` and himself in a
-   `CoordinatorRole`. He sends a `CoordinationRequest` to the pantry; its
-   `Handshake` is Pending. Billy's food need is now a `CareCoverageGap`.
-3. Margit Halvorsen accepts for the pantry (`acceptsRequest`) in a
-   `ProviderRole`, under a `PolicyDefinition` that limits the pantry to diet
-   type and pickup details. The handshake is Accepted and the gap becomes a
-   `CareCommitment`.
-4. Billy records that he moved from Alder Street (since 2024) to Birch Court
-   (since 2026-08-15), both entered on 2026-10-30.
-5. His phone sends two resting heart rate readings as `ObservationStatement`s
-   in his `ClinicalCareContext`, with Billy in a `PatientRole`.
+| Graph here | Name in a source | Where it's used | Definition |
+| --- | --- | --- | --- |
+| **Scene** | Scene graph | "The Holonic Graph", "The Holon's Accountant" | What this is right now: current assertional state, with one current value per fluent |
+| | Now graph | "The Holonic Graph", "The Holon's Accountant" | A view of current state derived from the history |
+| **Boundary** | Boundary graph | W3C Holon CG | The constraints and rules acting on the system, and the actions it exposes as interfaces |
+| | Domain graph | "The Holonic Graph" | The rules and categories that govern the holon: SHACL shapes, OWL axioms, SKOS schemes |
+| | Knowledge graph | "The Holon's Accountant", W3C Holon CG | Declarations and identity, written once; the entities within the system |
+| | Schema graph | "The Holon's Accountant" | What governs the knowledge graph's declarations |
+| **Event** | Event graph | "The Holon's Accountant", W3C Holon CG | The append-only log of how resources evolve over time |
+| | Context graph | "The Holonic Graph", W3C Holon CG | For whom, when and why something means what it means: author, time, authority, purpose, confidence |
+| | History graph | "The Holonic Graph" | Append-only, never retracted: the ground truth of events |
+| **Projection** | Projection | W3C Holon CG, HGA `hproj:` | A read-only map of the system, exposed outward |
 
-Billy's UCM `Person` is his WebID, so his identity stays the one his pod
-already has.
+Two names are not one of the four:
 
-## Files
+- **Holonic graph** ("The Holonic Graph") is the principle that the others
+  compose, with every node a graph and every graph a node in a larger graph.
+  It isn't a data graph.
+- **Payload graph** (HGA `holon:payloadGraph`) is a pointer to the graph holding
+  a holon's domain content. Here it points at the scene graph.
 
-| File | Holon layer | What's in it |
-| --- | --- | --- |
-| `holon.jsonld` | registration / knowledge | Billy's locker (`holon:AgentHolon`) containing his home monitoring (`holon:DataHolon`) and his food security coordination (`holon:ProcessHolon`); fluent declarations |
-| `care.jsonld` | payload graph | UCM entities, contexts, processes, participations and statements. Nothing in it changes; changing values live in fluents |
-| `events.jsonld` | event (history) graph | 9 append-only `hev:` events with `hev:assertedAt` / `hev:receivedAt`, PROV-O provenance, payload pointers into `care.jsonld`, and fluent values with supersession |
-| `scene.jsonld` | scene / now graph | Current value of each fluent, materialised as UCM triples (`ucm:locatedAt`, `ucm:hasLifecycleState`) |
-| `boundary.jsonld` | boundary | SHACL shapes for events. The holons also name UCM's own core shapes (`ucm:ParticipationShape`, `ucm:StatementShape`) as their boundary |
-| `projection.jsonld` | projection | `hproj:NowGraph` envelope pointing at the scene and event graphs |
-| `vocab.jsonld` | (vocabulary) | Local `fl:` terms for fluents, events and observables |
+`hproj:NowGraph` is also different from the now graph above: it's the HGA class
+for a read-only projection envelope, so it lives in the projection graph and
+points at the scene graph through `hproj:sceneGraphBlock`.
+
+## Layout
+
+Each holon is a Solid container holding its four named graphs, and containers
+nest the way the holons do:
+
+```
+holon/                     Billy's personal data locker
+  scene.jsonld  boundary.jsonld  event.jsonld  projection.jsonld
+  vocab.jsonld             shared fl: vocabulary, not part of any holon
+  home-monitoring/         Billy's home monitoring
+    scene.jsonld  boundary.jsonld  event.jsonld  projection.jsonld
+  food-security/           Billy's food security coordination
+    scene.jsonld  boundary.jsonld  event.jsonld  projection.jsonld
+```
+
+Each file is a JSON-LD named graph: its top-level `@id` is its own URL, and its
+triples are in `@graph`.
+
+| Graph | What's in it |
+| --- | --- |
+| `boundary.jsonld` | The holon's declaration, its fluents, and stable UCM things: people, locations, devices, contexts and policies. The parent's also holds the SHACL shapes for events and fluents, and its children reuse them by reference, along with the parent's shared entities |
+| `event.jsonld` | Append-only `hev:` events with `hev:assertedAt` / `hev:receivedAt`, PROV-O provenance and fluent values, plus the UCM processes, participations and statements each event introduced |
+| `scene.jsonld` | What's current: the UCM nodes still in force, each fluent's head event and value, and ordinary triples for fluents that stand for a property (`ucm:locatedAt`, `ucm:hasLifecycleState`) |
+| `projection.jsonld` | An `hproj:NowGraph` envelope pointing at the holon's scene and event graphs |
 
 ## How the two models meet
 
-- **UCM is the payload; the holon is the envelope.** Each event's
+- **UCM is the content; the holon is the envelope.** Each event's
   `hev:assertionPayload`, `hev:observationPayload` or `hev:commandPayload`
   points at the UCM nodes it introduced.
 - **Fluents give UCM temporalized state.** UCM's shapes allow a process one
@@ -63,8 +81,9 @@ already has.
 - **Coverage is an observable.** "Is Billy's food need covered?" observes the
   handshake state and moves from `CareCoverageGap` to `CareCommitment`.
 
-Validation: the events conform to `boundary.jsonld`, and `care.jsonld` plus
-`scene.jsonld` produce zero results, warnings included, against
+Validation: the checker confirms each holon is exactly these four named graphs,
+the events conform to the shapes in the boundary graphs, and the boundary, event
+and scene graphs together produce zero results, warnings included, against
 `ucm-core-shapes.ttl`.
 
 ## Choices where the sources don't settle things
@@ -79,7 +98,7 @@ Validation: the events conform to `boundary.jsonld`, and `care.jsonld` plus
   validating, and checks that each linked shape exists.
 - UCM has no property for a reading's value, so each observation uses
   `rdf:value` and a LOINC code in `dcterms:type`.
-- Each graph is its own Solid resource rather than a named graph in one
-  dataset, so plain Solid clients can read each one.
+- A statement still in force appears in both the event and scene graphs, as
+  identical triples, so the history stays self-contained when the scene changes.
 - JSON-LD 1.1 can't express Turtle 1.2 triple reifiers, so the scene graph
   points each fluent at its head event instead of annotating each triple.

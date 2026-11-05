@@ -14,53 +14,68 @@
     "dcterms": "http://purl.org/dc/terms/",
     "fl": "__H__vocab.jsonld#"
   },
+  "@id": "__H__scene.jsonld",
   "@graph": [
+    {
+      "@id": "__H__event.jsonld#food-screening",
+      "@type": "ucm:SocialCareInteraction",
+      "rdfs:label": "Food screening by Samuel",
+      "ucm:hasClient": {
+        "@id": "__POD__profile/card.jsonld#me"
+      }
+    },
+    {
+      "@id": "__H__event.jsonld#p-screening",
+      "@type": "ucm:Participation",
+      "ucm:participatingEntity": {
+        "@id": "__POD__profile/card.jsonld#me"
+      },
+      "ucm:occursWithin": {
+        "@id": "__H__event.jsonld#food-screening"
+      },
+      "ucm:assumesRole": {
+        "@id": "__H__event.jsonld#p-screening-role",
+        "@type": "ucm:ClientRole"
+      },
+      "ucm:scopedBy": {
+        "@id": "__H__boundary.jsonld#social-context"
+      },
+      "ucm:validFrom": {
+        "@value": "2026-10-20T15:00:00Z",
+        "@type": "xsd:dateTime"
+      }
+    },
+    {
+      "@id": "__H__event.jsonld#s-food-shortage",
+      "@type": "ucm:SocialCareStatement",
+      "rdfs:label": "Billy runs out of food before the end of each month",
+      "ucm:madeWithinContext": {
+        "@id": "__H__boundary.jsonld#social-context"
+      },
+      "ucm:statementSubject": {
+        "@id": "__H__event.jsonld#p-screening"
+      },
+      "ucm:generatedByProcess": {
+        "@id": "__H__event.jsonld#food-screening"
+      },
+      "ucm:statementDate": {
+        "@value": "2026-10-20T15:00:00Z",
+        "@type": "xsd:dateTime"
+      }
+    },
     {
       "@id": "__POD__profile/card.jsonld#me",
       "ucm:locatedAt": {
-        "@id": "__H__care.jsonld#birch-court"
+        "@id": "__H__boundary.jsonld#birch-court"
       }
     },
     {
-      "@id": "__H__care.jsonld#pantry-handshake",
-      "ucm:hasLifecycleState": {
-        "@id": "ucm:Accepted"
-      }
-    },
-    {
-      "@id": "__H__holon.jsonld#home",
+      "@id": "__H__boundary.jsonld#home",
       "fl:headEvent": {
-        "@id": "__H__events.jsonld#e7"
+        "@id": "__H__event.jsonld#e3"
       },
       "fl:currentValue": {
-        "@id": "__H__care.jsonld#birch-court"
-      }
-    },
-    {
-      "@id": "__H__holon.jsonld#resting-heart-rate",
-      "fl:headEvent": {
-        "@id": "__H__events.jsonld#e9"
-      },
-      "fl:currentValue": {
-        "@id": "__H__care.jsonld#s-hr-2"
-      }
-    },
-    {
-      "@id": "__H__holon.jsonld#pantry-handshake-state",
-      "fl:headEvent": {
-        "@id": "__H__events.jsonld#e4"
-      },
-      "fl:currentValue": {
-        "@id": "ucm:Accepted"
-      }
-    },
-    {
-      "@id": "__H__holon.jsonld#food-coverage",
-      "fl:headEvent": {
-        "@id": "__H__events.jsonld#e5"
-      },
-      "fl:currentValue": {
-        "@id": "__H__care.jsonld#pantry-commitment"
+        "@id": "__H__boundary.jsonld#birch-court"
       }
     }
   ]

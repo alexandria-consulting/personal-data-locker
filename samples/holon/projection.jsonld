@@ -14,14 +14,15 @@
     "dcterms": "http://purl.org/dc/terms/",
     "fl": "__H__vocab.jsonld#"
   },
+  "@id": "__H__projection.jsonld",
   "@graph": [
     {
       "@id": "__H__projection.jsonld#now",
       "@type": "hproj:NowGraph",
       "rdfs:label": "Billy now",
-      "rdfs:comment": "Read-only projection of Billy's locker and the two holons inside it: current state in the scene graph, history in the event graph.",
+      "rdfs:comment": "Read-only projection of Billy's locker and the two holons inside it.",
       "hproj:sourceHolon": {
-        "@id": "__H__holon.jsonld#billy"
+        "@id": "__H__boundary.jsonld#holon"
       },
       "hproj:projectionDepth": 1,
       "hproj:validAt": {
@@ -36,7 +37,7 @@
         "@type": "xsd:anyURI"
       },
       "hproj:provenanceBlock": {
-        "@value": "__H__events.jsonld",
+        "@value": "__H__event.jsonld",
         "@type": "xsd:anyURI"
       },
       "hproj:contentFormat": {

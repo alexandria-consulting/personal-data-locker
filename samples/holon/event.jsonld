@@ -1,0 +1,179 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "holon": "http://w3id.org/holon/",
+    "hev": "http://w3id.org/holon/event/",
+    "hproj": "http://w3id.org/holon/projection/",
+    "ucm": "https://w3.org/ns/ucm#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "sh": "http://www.w3.org/ns/shacl#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "fl": "__H__vocab.jsonld#"
+  },
+  "@id": "__H__event.jsonld",
+  "@graph": [
+    {
+      "@id": "__H__event.jsonld#screening",
+      "@type": "prov:Activity",
+      "rdfs:label": "Samuel's food screening visit"
+    },
+    {
+      "@id": "__H__event.jsonld#profile-entry",
+      "@type": "prov:Activity",
+      "rdfs:label": "Billy updates their own details"
+    },
+    {
+      "@id": "__H__event.jsonld#e1",
+      "@type": "hev:AssertionEvent",
+      "hev:eventSequence": 1,
+      "hev:targetHolon": {
+        "@id": "__H__boundary.jsonld#holon"
+      },
+      "hev:assertedAt": {
+        "@value": "2026-10-20T15:00:00Z",
+        "@type": "xsd:dateTime"
+      },
+      "hev:receivedAt": {
+        "@value": "2026-10-20T15:10:00Z",
+        "@type": "xsd:dateTime"
+      },
+      "prov:wasGeneratedBy": {
+        "@id": "__H__event.jsonld#screening"
+      },
+      "prov:wasAttributedTo": {
+        "@id": "__H__boundary.jsonld#samuel"
+      },
+      "hev:assertionPayload": [
+        {
+          "@id": "__H__event.jsonld#food-screening"
+        },
+        {
+          "@id": "__H__event.jsonld#p-screening"
+        },
+        {
+          "@id": "__H__event.jsonld#s-food-shortage"
+        }
+      ]
+    },
+    {
+      "@id": "__H__event.jsonld#food-screening",
+      "@type": "ucm:SocialCareInteraction",
+      "rdfs:label": "Food screening by Samuel",
+      "ucm:hasClient": {
+        "@id": "__POD__profile/card.jsonld#me"
+      }
+    },
+    {
+      "@id": "__H__event.jsonld#p-screening",
+      "@type": "ucm:Participation",
+      "ucm:participatingEntity": {
+        "@id": "__POD__profile/card.jsonld#me"
+      },
+      "ucm:occursWithin": {
+        "@id": "__H__event.jsonld#food-screening"
+      },
+      "ucm:assumesRole": {
+        "@id": "__H__event.jsonld#p-screening-role",
+        "@type": "ucm:ClientRole"
+      },
+      "ucm:scopedBy": {
+        "@id": "__H__boundary.jsonld#social-context"
+      },
+      "ucm:validFrom": {
+        "@value": "2026-10-20T15:00:00Z",
+        "@type": "xsd:dateTime"
+      }
+    },
+    {
+      "@id": "__H__event.jsonld#s-food-shortage",
+      "@type": "ucm:SocialCareStatement",
+      "rdfs:label": "Billy runs out of food before the end of each month",
+      "ucm:madeWithinContext": {
+        "@id": "__H__boundary.jsonld#social-context"
+      },
+      "ucm:statementSubject": {
+        "@id": "__H__event.jsonld#p-screening"
+      },
+      "ucm:generatedByProcess": {
+        "@id": "__H__event.jsonld#food-screening"
+      },
+      "ucm:statementDate": {
+        "@value": "2026-10-20T15:00:00Z",
+        "@type": "xsd:dateTime"
+      }
+    },
+    {
+      "@id": "__H__event.jsonld#e2",
+      "@type": "hev:AssertionEvent",
+      "hev:eventSequence": 2,
+      "hev:targetHolon": {
+        "@id": "__H__boundary.jsonld#holon"
+      },
+      "hev:assertedAt": {
+        "@value": "2024-03-01T00:00:00Z",
+        "@type": "xsd:dateTime"
+      },
+      "hev:receivedAt": {
+        "@value": "2026-10-30T12:05:00Z",
+        "@type": "xsd:dateTime"
+      },
+      "prov:wasGeneratedBy": {
+        "@id": "__H__event.jsonld#profile-entry"
+      },
+      "prov:wasAttributedTo": {
+        "@id": "__POD__profile/card.jsonld#me"
+      },
+      "hev:assertionPayload": [
+        {
+          "@id": "__H__boundary.jsonld#alder-street"
+        }
+      ],
+      "fl:fluent": {
+        "@id": "__H__boundary.jsonld#home"
+      },
+      "fl:value": {
+        "@id": "__H__boundary.jsonld#alder-street"
+      }
+    },
+    {
+      "@id": "__H__event.jsonld#e3",
+      "@type": "hev:AssertionEvent",
+      "hev:eventSequence": 3,
+      "hev:targetHolon": {
+        "@id": "__H__boundary.jsonld#holon"
+      },
+      "hev:assertedAt": {
+        "@value": "2026-08-15T00:00:00Z",
+        "@type": "xsd:dateTime"
+      },
+      "hev:receivedAt": {
+        "@value": "2026-10-30T12:05:30Z",
+        "@type": "xsd:dateTime"
+      },
+      "prov:wasGeneratedBy": {
+        "@id": "__H__event.jsonld#profile-entry"
+      },
+      "prov:wasAttributedTo": {
+        "@id": "__POD__profile/card.jsonld#me"
+      },
+      "hev:assertionPayload": [
+        {
+          "@id": "__H__boundary.jsonld#birch-court"
+        }
+      ],
+      "fl:fluent": {
+        "@id": "__H__boundary.jsonld#home"
+      },
+      "fl:value": {
+        "@id": "__H__boundary.jsonld#birch-court"
+      },
+      "fl:supersedes": {
+        "@id": "__H__event.jsonld#e2"
+      }
+    }
+  ]
+}

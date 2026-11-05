@@ -14,12 +14,121 @@
     "dcterms": "http://purl.org/dc/terms/",
     "fl": "__H__vocab.jsonld#"
   },
+  "@id": "__H__boundary.jsonld",
   "@graph": [
+    {
+      "@id": "__H__boundary.jsonld#holon",
+      "@type": "holon:AgentHolon",
+      "rdfs:label": "Billy's personal data locker",
+      "dcterms:description": "Billy's own copy of their care across clinical and social care contexts. Payload terms are from the W3C UCM CG.",
+      "holon:registrationStatus": {
+        "@id": "holon:CandidateStatus"
+      },
+      "holon:payloadGraph": {
+        "@value": "__H__scene.jsonld",
+        "@type": "xsd:anyURI"
+      },
+      "holon:boundary": [
+        {
+          "@id": "__H__boundary.jsonld#EventShape"
+        },
+        {
+          "@id": "__H__boundary.jsonld#FluentShape"
+        },
+        {
+          "@id": "ucm:ParticipationShape"
+        },
+        {
+          "@id": "ucm:StatementShape"
+        }
+      ],
+      "holon:boundaryMode": {
+        "@id": "holon:OpenBoundary"
+      },
+      "dcterms:hasPart": [
+        {
+          "@id": "__H__scene.jsonld"
+        },
+        {
+          "@id": "__H__boundary.jsonld"
+        },
+        {
+          "@id": "__H__event.jsonld"
+        },
+        {
+          "@id": "__H__projection.jsonld"
+        }
+      ],
+      "fl:hasFluent": [
+        {
+          "@id": "__H__boundary.jsonld#home"
+        }
+      ],
+      "dcterms:subject": {
+        "@id": "__POD__profile/card.jsonld#me"
+      },
+      "holon:contains": [
+        {
+          "@id": "__H__home-monitoring/boundary.jsonld#holon"
+        },
+        {
+          "@id": "__H__food-security/boundary.jsonld#holon"
+        }
+      ]
+    },
+    {
+      "@id": "__H__boundary.jsonld#home",
+      "@type": "fl:Fluent",
+      "rdfs:label": "Where Billy lives",
+      "fl:subject": {
+        "@id": "__POD__profile/card.jsonld#me"
+      },
+      "fl:property": {
+        "@id": "ucm:locatedAt"
+      }
+    },
+    {
+      "@id": "__POD__profile/card.jsonld#me",
+      "@type": "ucm:Person",
+      "rdfs:label": "Billy Testman"
+    },
+    {
+      "@id": "__H__boundary.jsonld#samuel",
+      "@type": "ucm:Person",
+      "rdfs:label": "Samuel Whitfield",
+      "rdfs:comment": "Community health worker with Eastside Neighbors (persona from the UCM care-team user stories)."
+    },
+    {
+      "@id": "__H__boundary.jsonld#alder-street",
+      "@type": "ucm:Location",
+      "rdfs:label": "Billy's former apartment, Alder Street"
+    },
+    {
+      "@id": "__H__boundary.jsonld#birch-court",
+      "@type": "ucm:Location",
+      "rdfs:label": "Billy's apartment, Birch Court"
+    },
+    {
+      "@id": "__H__boundary.jsonld#social-context",
+      "@type": "ucm:SocialCareContext",
+      "rdfs:label": "Billy's social care"
+    },
+    {
+      "@id": "__H__boundary.jsonld#locker-agent",
+      "@type": [
+        "prov:Agent",
+        "prov:SoftwareAgent"
+      ],
+      "rdfs:label": "Billy's locker",
+      "prov:actedOnBehalfOf": {
+        "@id": "__POD__profile/card.jsonld#me"
+      }
+    },
     {
       "@id": "__H__boundary.jsonld#EventShape",
       "@type": "sh:NodeShape",
       "rdfs:label": "Event boundary",
-      "rdfs:comment": "Every event entering Billy's holons names its holon and payload, carries both bitemporal timestamps, and says what produced it. Payload content is validated by the UCM core shapes (ucm:*Shape), published at https://github.com/w3c-cg/ucm/blob/main/ucm-core-shapes.ttl.",
+      "rdfs:comment": "Every event entering Billy's holons names its holon and payload, carries both bitemporal timestamps, and says what produced it. Child holons reuse this shape by reference. UCM content is validated by UCM's core shapes, published at https://github.com/w3c-cg/ucm/blob/main/ucm-core-shapes.ttl.",
       "sh:targetClass": [
         {
           "@id": "hev:AssertionEvent"

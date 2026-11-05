@@ -1,0 +1,97 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "holon": "http://w3id.org/holon/",
+    "hev": "http://w3id.org/holon/event/",
+    "hproj": "http://w3id.org/holon/projection/",
+    "ucm": "https://w3.org/ns/ucm#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "sh": "http://www.w3.org/ns/shacl#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "fl": "__H__vocab.jsonld#"
+  },
+  "@id": "__H__home-monitoring/boundary.jsonld",
+  "@graph": [
+    {
+      "@id": "__H__home-monitoring/boundary.jsonld#holon",
+      "@type": "holon:DataHolon",
+      "rdfs:label": "Billy's home monitoring",
+      "dcterms:description": "Readings from Billy's phone, as UCM observation statements.",
+      "holon:registrationStatus": {
+        "@id": "holon:CandidateStatus"
+      },
+      "holon:payloadGraph": {
+        "@value": "__H__home-monitoring/scene.jsonld",
+        "@type": "xsd:anyURI"
+      },
+      "holon:boundary": [
+        {
+          "@id": "__H__boundary.jsonld#EventShape"
+        },
+        {
+          "@id": "__H__boundary.jsonld#FluentShape"
+        },
+        {
+          "@id": "ucm:ParticipationShape"
+        },
+        {
+          "@id": "ucm:StatementShape"
+        }
+      ],
+      "holon:boundaryMode": {
+        "@id": "holon:OpenBoundary"
+      },
+      "dcterms:hasPart": [
+        {
+          "@id": "__H__home-monitoring/scene.jsonld"
+        },
+        {
+          "@id": "__H__home-monitoring/boundary.jsonld"
+        },
+        {
+          "@id": "__H__home-monitoring/event.jsonld"
+        },
+        {
+          "@id": "__H__home-monitoring/projection.jsonld"
+        }
+      ],
+      "fl:hasFluent": [
+        {
+          "@id": "__H__home-monitoring/boundary.jsonld#resting-heart-rate"
+        }
+      ],
+      "holon:partOf": {
+        "@id": "__H__boundary.jsonld#holon"
+      }
+    },
+    {
+      "@id": "__H__home-monitoring/boundary.jsonld#resting-heart-rate",
+      "@type": "fl:Fluent",
+      "rdfs:label": "Billy's latest resting heart rate reading",
+      "fl:subject": {
+        "@id": "__POD__profile/card.jsonld#me"
+      }
+    },
+    {
+      "@id": "__H__home-monitoring/boundary.jsonld#phone",
+      "@type": [
+        "ucm:Device",
+        "prov:Agent",
+        "prov:SoftwareAgent"
+      ],
+      "rdfs:label": "Billy's phone health app",
+      "prov:actedOnBehalfOf": {
+        "@id": "__POD__profile/card.jsonld#me"
+      }
+    },
+    {
+      "@id": "__H__home-monitoring/boundary.jsonld#clinical-context",
+      "@type": "ucm:ClinicalCareContext",
+      "rdfs:label": "Billy's clinical care"
+    }
+  ]
+}

@@ -1,0 +1,77 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "holon": "http://w3id.org/holon/",
+    "hev": "http://w3id.org/holon/event/",
+    "hproj": "http://w3id.org/holon/projection/",
+    "ucm": "https://w3.org/ns/ucm#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "sh": "http://www.w3.org/ns/shacl#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "fl": "__H__vocab.jsonld#"
+  },
+  "@id": "__H__home-monitoring/scene.jsonld",
+  "@graph": [
+    {
+      "@id": "__H__home-monitoring/event.jsonld#home-monitoring",
+      "@type": "ucm:Process",
+      "rdfs:label": "Home monitoring from Billy's phone"
+    },
+    {
+      "@id": "__H__home-monitoring/event.jsonld#p-monitoring",
+      "@type": "ucm:Participation",
+      "ucm:participatingEntity": {
+        "@id": "__POD__profile/card.jsonld#me"
+      },
+      "ucm:occursWithin": {
+        "@id": "__H__home-monitoring/event.jsonld#home-monitoring"
+      },
+      "ucm:assumesRole": {
+        "@id": "__H__home-monitoring/event.jsonld#p-monitoring-role",
+        "@type": "ucm:PatientRole"
+      },
+      "ucm:scopedBy": {
+        "@id": "__H__home-monitoring/boundary.jsonld#clinical-context"
+      },
+      "ucm:validFrom": {
+        "@value": "2026-10-01T00:00:00Z",
+        "@type": "xsd:dateTime"
+      }
+    },
+    {
+      "@id": "__H__home-monitoring/event.jsonld#s-hr-2",
+      "@type": "ucm:ObservationStatement",
+      "rdfs:label": "Resting heart rate 61 bpm",
+      "ucm:madeWithinContext": {
+        "@id": "__H__home-monitoring/boundary.jsonld#clinical-context"
+      },
+      "ucm:statementSubject": {
+        "@id": "__H__home-monitoring/event.jsonld#p-monitoring"
+      },
+      "ucm:generatedByProcess": {
+        "@id": "__H__home-monitoring/event.jsonld#home-monitoring"
+      },
+      "ucm:statementDate": {
+        "@value": "2026-11-02T07:00:00Z",
+        "@type": "xsd:dateTime"
+      },
+      "dcterms:type": {
+        "@id": "http://loinc.org/rdf/40443-4"
+      },
+      "rdf:value": 61
+    },
+    {
+      "@id": "__H__home-monitoring/boundary.jsonld#resting-heart-rate",
+      "fl:headEvent": {
+        "@id": "__H__home-monitoring/event.jsonld#e2"
+      },
+      "fl:currentValue": {
+        "@id": "__H__home-monitoring/event.jsonld#s-hr-2"
+      }
+    }
+  ]
+}

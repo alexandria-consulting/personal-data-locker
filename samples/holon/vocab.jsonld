@@ -72,7 +72,7 @@
       "@id": "fl:property",
       "@type": "rdf:Property",
       "rdfs:label": "property",
-      "rdfs:comment": "The property the fluent stands for, if any. The scene graph then materialises (subject, property, current value) as an ordinary triple, so the payload graph never holds two values for a single-valued property.",
+      "rdfs:comment": "The property the fluent stands for, if any. The scene graph materialises (subject, property, current value) as an ordinary triple, so no graph holds two current values for a single-valued property.",
       "rdfs:isDefinedBy": {
         "@id": "__H__vocab.jsonld"
       }
@@ -90,7 +90,7 @@
       "@id": "fl:value",
       "@type": "rdf:Property",
       "rdfs:label": "value",
-      "rdfs:comment": "The value the event records for its fluent: a literal or a node in the payload graph.",
+      "rdfs:comment": "The value the event records for its fluent: a literal or a node.",
       "rdfs:isDefinedBy": {
         "@id": "__H__vocab.jsonld"
       }

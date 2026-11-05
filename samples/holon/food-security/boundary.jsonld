@@ -1,0 +1,143 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "holon": "http://w3id.org/holon/",
+    "hev": "http://w3id.org/holon/event/",
+    "hproj": "http://w3id.org/holon/projection/",
+    "ucm": "https://w3.org/ns/ucm#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "sh": "http://www.w3.org/ns/shacl#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "fl": "__H__vocab.jsonld#"
+  },
+  "@id": "__H__food-security/boundary.jsonld",
+  "@graph": [
+    {
+      "@id": "__H__food-security/boundary.jsonld#holon",
+      "@type": "holon:ProcessHolon",
+      "rdfs:label": "Billy's food security coordination",
+      "dcterms:description": "Tracks the care coordination interaction Samuel opened, and whether Billy's food need is covered.",
+      "holon:registrationStatus": {
+        "@id": "holon:CandidateStatus"
+      },
+      "holon:payloadGraph": {
+        "@value": "__H__food-security/scene.jsonld",
+        "@type": "xsd:anyURI"
+      },
+      "holon:boundary": [
+        {
+          "@id": "__H__boundary.jsonld#EventShape"
+        },
+        {
+          "@id": "__H__boundary.jsonld#FluentShape"
+        },
+        {
+          "@id": "ucm:ParticipationShape"
+        },
+        {
+          "@id": "ucm:StatementShape"
+        }
+      ],
+      "holon:boundaryMode": {
+        "@id": "holon:OpenBoundary"
+      },
+      "dcterms:hasPart": [
+        {
+          "@id": "__H__food-security/scene.jsonld"
+        },
+        {
+          "@id": "__H__food-security/boundary.jsonld"
+        },
+        {
+          "@id": "__H__food-security/event.jsonld"
+        },
+        {
+          "@id": "__H__food-security/projection.jsonld"
+        }
+      ],
+      "fl:hasFluent": [
+        {
+          "@id": "__H__food-security/boundary.jsonld#pantry-handshake-state"
+        },
+        {
+          "@id": "__H__food-security/boundary.jsonld#food-coverage"
+        }
+      ],
+      "holon:partOf": {
+        "@id": "__H__boundary.jsonld#holon"
+      },
+      "dcterms:subject": {
+        "@id": "__H__food-security/event.jsonld#coordination"
+      }
+    },
+    {
+      "@id": "__H__food-security/boundary.jsonld#pantry-handshake-state",
+      "@type": "fl:Fluent",
+      "rdfs:label": "Lifecycle state of the pantry handshake",
+      "fl:subject": {
+        "@id": "__H__food-security/event.jsonld#pantry-handshake"
+      },
+      "fl:property": {
+        "@id": "ucm:hasLifecycleState"
+      }
+    },
+    {
+      "@id": "__H__food-security/boundary.jsonld#food-coverage",
+      "@type": [
+        "fl:Fluent",
+        "fl:Observable"
+      ],
+      "rdfs:label": "Whether Billy's food requirement is covered",
+      "fl:subject": {
+        "@id": "__H__food-security/boundary.jsonld#food-requirement"
+      },
+      "fl:observes": {
+        "@id": "__H__food-security/boundary.jsonld#pantry-handshake-state"
+      }
+    },
+    {
+      "@id": "__H__food-security/boundary.jsonld#margit",
+      "@type": "ucm:Person",
+      "rdfs:label": "Margit Halvorsen",
+      "rdfs:comment": "Volunteer lead at the Eastside Neighbors Food Pantry (persona from the UCM nutrition user story)."
+    },
+    {
+      "@id": "__H__food-security/boundary.jsonld#eastside",
+      "@type": "ucm:CommunityGroup",
+      "rdfs:label": "Eastside Neighbors"
+    },
+    {
+      "@id": "__H__food-security/boundary.jsonld#pantry",
+      "@type": "ucm:Location",
+      "rdfs:label": "Eastside Neighbors Food Pantry"
+    },
+    {
+      "@id": "__H__food-security/boundary.jsonld#food-security-focus",
+      "@type": "ucm:ActivityFocus",
+      "rdfs:label": "Food security"
+    },
+    {
+      "@id": "__H__food-security/boundary.jsonld#pantry-context",
+      "@type": "ucm:SocialCareContext",
+      "rdfs:label": "Pantry meal service",
+      "ucm:definedByArtifact": {
+        "@id": "__H__food-security/boundary.jsonld#pantry-policy"
+      }
+    },
+    {
+      "@id": "__H__food-security/boundary.jsonld#pantry-policy",
+      "@type": "ucm:PolicyDefinition",
+      "rdfs:label": "Pantry data limit",
+      "rdfs:comment": "The pantry receives diet type and pickup details only, and nothing from the clinical care context."
+    },
+    {
+      "@id": "__H__food-security/boundary.jsonld#food-requirement",
+      "@type": "ucm:CareCoverageRequirement",
+      "rdfs:label": "Billy needs a food provider participating in their food security coordination"
+    }
+  ]
+}

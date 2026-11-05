@@ -1,0 +1,143 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "holon": "http://w3id.org/holon/",
+    "hev": "http://w3id.org/holon/event/",
+    "hproj": "http://w3id.org/holon/projection/",
+    "ucm": "https://w3.org/ns/ucm#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "sh": "http://www.w3.org/ns/shacl#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "fl": "__H__vocab.jsonld#"
+  },
+  "@id": "__H__food-security/scene.jsonld",
+  "@graph": [
+    {
+      "@id": "__H__food-security/event.jsonld#coordination",
+      "@type": "ucm:CareCoordinationInteraction",
+      "rdfs:label": "Food security coordination for Billy",
+      "ucm:hasActivityFocus": {
+        "@id": "__H__food-security/boundary.jsonld#food-security-focus"
+      }
+    },
+    {
+      "@id": "__H__food-security/event.jsonld#pantry-request",
+      "@type": "ucm:CoordinationRequest",
+      "rdfs:label": "Request to the Eastside pantry for tailored meals",
+      "ucm:hasActivityFocus": {
+        "@id": "__H__food-security/boundary.jsonld#food-security-focus"
+      }
+    },
+    {
+      "@id": "__H__food-security/event.jsonld#pantry-handshake",
+      "@type": "ucm:Handshake",
+      "rdfs:label": "Pantry handshake",
+      "rdfs:comment": "Its lifecycle state is a fluent: history in this holon's event graph, current state in its scene graph.",
+      "ucm:negotiates": {
+        "@id": "__H__food-security/event.jsonld#coordination"
+      }
+    },
+    {
+      "@id": "__H__food-security/event.jsonld#p-coord-billy",
+      "@type": "ucm:Participation",
+      "ucm:participatingEntity": {
+        "@id": "__POD__profile/card.jsonld#me"
+      },
+      "ucm:occursWithin": {
+        "@id": "__H__food-security/event.jsonld#coordination"
+      },
+      "ucm:assumesRole": {
+        "@id": "__H__food-security/event.jsonld#p-coord-billy-role",
+        "@type": "ucm:BeneficiaryRole"
+      },
+      "ucm:scopedBy": {
+        "@id": "__H__boundary.jsonld#social-context"
+      },
+      "ucm:validFrom": {
+        "@value": "2026-10-21T09:00:00Z",
+        "@type": "xsd:dateTime"
+      }
+    },
+    {
+      "@id": "__H__food-security/event.jsonld#p-coord-samuel",
+      "@type": "ucm:Participation",
+      "ucm:participatingEntity": {
+        "@id": "__H__boundary.jsonld#samuel"
+      },
+      "ucm:occursWithin": {
+        "@id": "__H__food-security/event.jsonld#coordination"
+      },
+      "ucm:assumesRole": {
+        "@id": "__H__food-security/event.jsonld#p-coord-samuel-role",
+        "@type": "ucm:CoordinatorRole"
+      },
+      "ucm:scopedBy": {
+        "@id": "__H__boundary.jsonld#social-context"
+      },
+      "ucm:validFrom": {
+        "@value": "2026-10-21T09:00:00Z",
+        "@type": "xsd:dateTime"
+      }
+    },
+    {
+      "@id": "__H__food-security/event.jsonld#p-coord-pantry",
+      "@type": "ucm:Participation",
+      "ucm:participatingEntity": {
+        "@id": "__H__food-security/boundary.jsonld#margit"
+      },
+      "ucm:occursWithin": {
+        "@id": "__H__food-security/event.jsonld#coordination"
+      },
+      "ucm:assumesRole": {
+        "@id": "__H__food-security/event.jsonld#p-coord-pantry-role",
+        "@type": "ucm:ProviderRole"
+      },
+      "ucm:scopedBy": {
+        "@id": "__H__food-security/boundary.jsonld#pantry-context"
+      },
+      "ucm:validFrom": {
+        "@value": "2026-10-23T14:00:00Z",
+        "@type": "xsd:dateTime"
+      }
+    },
+    {
+      "@id": "__H__food-security/boundary.jsonld#margit",
+      "ucm:acceptsRequest": {
+        "@id": "__H__food-security/event.jsonld#p-coord-pantry"
+      }
+    },
+    {
+      "@id": "__H__food-security/event.jsonld#pantry-commitment",
+      "@type": "ucm:CareCommitment",
+      "rdfs:label": "Eastside pantry provides a soft-texture, high-protein meal box each week"
+    },
+    {
+      "@id": "__H__food-security/event.jsonld#pantry-handshake",
+      "ucm:hasLifecycleState": {
+        "@id": "ucm:Accepted"
+      }
+    },
+    {
+      "@id": "__H__food-security/boundary.jsonld#pantry-handshake-state",
+      "fl:headEvent": {
+        "@id": "__H__food-security/event.jsonld#e3"
+      },
+      "fl:currentValue": {
+        "@id": "ucm:Accepted"
+      }
+    },
+    {
+      "@id": "__H__food-security/boundary.jsonld#food-coverage",
+      "fl:headEvent": {
+        "@id": "__H__food-security/event.jsonld#e4"
+      },
+      "fl:currentValue": {
+        "@id": "__H__food-security/event.jsonld#pantry-commitment"
+      }
+    }
+  ]
+}

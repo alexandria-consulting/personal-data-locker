@@ -3,10 +3,11 @@
 # Copyright (C) 2026 Eric Jahn
 """Validate samples/holon/ before uploading.
 
-Checks the events against the holon boundary (boundary.jsonld) and the UCM
-payload (care.jsonld + scene.jsonld) against the UCM core shapes, with the
-UCM vocabulary loaded into the data graph the way UCM's own test suite does.
-Warnings count as failures.
+Checks that each holon is exactly four named graphs (scene, boundary, event,
+projection), each named after its own file; that events conform to the holon
+boundary shapes; and that the UCM content conforms to UCM's core shapes, with
+the UCM vocabulary loaded into the data graph the way UCM's own test suite
+does. Warnings count as failures.
 
 Usage: scripts/check-holon-sample.py <path to a w3c-cg/ucm checkout>
 Requires rdflib and pyshacl (pip install rdflib pyshacl).
@@ -23,34 +24,77 @@ UCM = sys.argv[1]
 SAMPLES = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "samples", "holon")
 POD = "http://localhost:4443/billy/"
 BASE = POD + "holon/"
+GRAPHS = ["scene", "boundary", "event", "projection"]
+HOLONS = ["", "home-monitoring/", "food-security/"]
+UCM_NS = "https://w3.org/ns/ucm#"
 
-g = {}
-for f in sorted(x for x in os.listdir(SAMPLES) if x.endswith(".jsonld")):
-    text = open(os.path.join(SAMPLES, f)).read().replace("__H__", BASE).replace("__POD__", POD)
-    g[f] = rdflib.Graph().parse(data=text, format="json-ld", base=BASE + f)
+failed = False
 
-# The data and its boundary links use https://w3.org/ns/ucm# for terms and
-# shapes alike. The shapes and lifecycle vocabulary still use
-# urn:w3c:cg:ucm# and urn:w3c:cg:ucm:shapes#, so map both onto it.
+
+def fail(message):
+    global failed
+    print(message)
+    failed = True
+
+
+def load(rel):
+    text = open(os.path.join(SAMPLES, rel)).read().replace("__H__", BASE).replace("__POD__", POD)
+    ds = rdflib.Dataset()
+    ds.parse(data=text, format="json-ld", base=BASE + rel)
+    return ds
+
+
+named = {}
+for holon in HOLONS:
+    for name in GRAPHS:
+        rel = f"{holon}{name}.jsonld"
+        ds = load(rel)
+        iri = rdflib.URIRef(BASE + rel)
+        names = {g.identifier for g in ds.graphs() if len(g) and g.identifier != ds.default_graph.identifier}
+        if names != {iri} or len(ds.default_graph):
+            fail(f"{rel}: expected one named graph <{iri}> and an empty default graph, got {names}")
+        named[rel] = ds.graph(iri)
+print(f"named graphs: {len(named)} across {len(HOLONS)} holons")
+
+
+def union(*suffixes):
+    g = rdflib.Graph()
+    for rel, graph in named.items():
+        if os.path.basename(rel) in suffixes:
+            g += graph
+    return g
+
+
+# The published shapes and lifecycle vocabulary still use urn:w3c:cg:ucm# and
+# urn:w3c:cg:ucm:shapes#; the data uses https://w3.org/ns/ucm# for both.
 def ucm_file(name):
     text = (open(os.path.join(UCM, name)).read()
-            .replace("urn:w3c:cg:ucm:shapes#", "https://w3.org/ns/ucm#")
-            .replace("urn:w3c:cg:ucm#", "https://w3.org/ns/ucm#"))
+            .replace("urn:w3c:cg:ucm:shapes#", UCM_NS)
+            .replace("urn:w3c:cg:ucm#", UCM_NS))
     return rdflib.Graph().parse(data=text, format="turtle")
+
 
 ucm = ucm_file("unified-care-model.ttl") + ucm_file("ucm-lifecycle-vocabularies.ttl")
 ucm_shapes = ucm_file("ucm-core-shapes.ttl")
+vocab = load("vocab.jsonld")
+vocab_graph = rdflib.Graph()
+for s, p, o, _ in vocab.quads():
+    vocab_graph.add((s, p, o))
 
-failed = False
-UCM_NS = "https://w3.org/ns/ucm#"
+boundary = union("boundary.jsonld")
 SH_NODE = rdflib.URIRef("http://www.w3.org/ns/shacl#NodeShape")
-for shape in set(g["holon.jsonld"].objects(None, rdflib.URIRef("http://w3id.org/holon/boundary"))):
-    if str(shape).startswith(UCM_NS) and (shape, rdflib.RDF.type, SH_NODE) not in ucm_shapes:
-        print(f"boundary link {shape} is not a shape in ucm-core-shapes.ttl")
-        failed = True
+for shape in set(boundary.objects(None, rdflib.URIRef("http://w3id.org/holon/boundary"))):
+    if str(shape).startswith(UCM_NS):
+        if (shape, rdflib.RDF.type, SH_NODE) not in ucm_shapes:
+            fail(f"boundary link {shape} is not a shape in ucm-core-shapes.ttl")
+    elif (shape, rdflib.RDF.type, SH_NODE) not in boundary:
+        fail(f"boundary link {shape} is not a shape in a boundary graph")
+
 for name, data, shapes, ont in [
-    ("holon boundary", g["holon.jsonld"] + g["events.jsonld"], g["boundary.jsonld"], g["vocab.jsonld"]),
-    ("UCM core shapes", g["care.jsonld"] + g["scene.jsonld"] + ucm, ucm_shapes, None),
+    ("holon boundary", boundary + union("event.jsonld"), boundary, vocab_graph),
+    # Each holon's event and scene graphs both describe current UCM nodes,
+    # with identical triples, so the union holds no conflicting values.
+    ("UCM core shapes", boundary + union("event.jsonld", "scene.jsonld") + ucm, ucm_shapes, None),
 ]:
     ok, _, report = pyshacl.validate(data, shacl_graph=shapes, ont_graph=ont,
                                      inference="rdfs", advanced=True, allow_warnings=False)

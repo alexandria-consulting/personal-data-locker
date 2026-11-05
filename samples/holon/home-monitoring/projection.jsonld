@@ -1,0 +1,48 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "holon": "http://w3id.org/holon/",
+    "hev": "http://w3id.org/holon/event/",
+    "hproj": "http://w3id.org/holon/projection/",
+    "ucm": "https://w3.org/ns/ucm#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "sh": "http://www.w3.org/ns/shacl#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "fl": "__H__vocab.jsonld#"
+  },
+  "@id": "__H__home-monitoring/projection.jsonld",
+  "@graph": [
+    {
+      "@id": "__H__home-monitoring/projection.jsonld#now",
+      "@type": "hproj:NowGraph",
+      "rdfs:label": "Billy's home monitoring now",
+      "rdfs:comment": "Read-only projection of the current reading and its history.",
+      "hproj:sourceHolon": {
+        "@id": "__H__home-monitoring/boundary.jsonld#holon"
+      },
+      "hproj:projectionDepth": 0,
+      "hproj:validAt": {
+        "@value": "2026-11-03T03:00:00Z",
+        "@type": "xsd:dateTime"
+      },
+      "hproj:requestingAgent": {
+        "@id": "__POD__profile/card.jsonld#me"
+      },
+      "hproj:sceneGraphBlock": {
+        "@value": "__H__home-monitoring/scene.jsonld",
+        "@type": "xsd:anyURI"
+      },
+      "hproj:provenanceBlock": {
+        "@value": "__H__home-monitoring/event.jsonld",
+        "@type": "xsd:anyURI"
+      },
+      "hproj:contentFormat": {
+        "@id": "hproj:JSONLDFormat"
+      }
+    }
+  ]
+}
