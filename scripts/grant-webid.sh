@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 # SPDX-License-Identifier: AGPL-3.0-only
-# Copyright (C) 2026 Eric Jahn
 # Grant a WebID Read/Write/Control on a pod container, keeping the existing
 # authorizations in its .acl. Safe to re-run: an existing grant for the same
 # WebID is replaced, not duplicated.
