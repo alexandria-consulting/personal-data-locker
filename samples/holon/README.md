@@ -101,6 +101,8 @@ server `fl:Fluent` is
 
 ## Viewing what's in the pod
 
+Let's provide a concrete example with a Solid Pod, owned by a fictional person named "Billy". His sample data is checked into this project at: [./personal-data-locker-test/tree/main/samples](./personal-data-locker-test/tree/main/samples)
+
 Use `curl` with Billy's login token. This server has no pod browser: opening
 <http://localhost:4443/billy/> shows raw JSON-LD, and `/billy/holon/` answers
 401 because a browser tab isn't logged in:
@@ -116,7 +118,7 @@ you should treat like a password:
 F=~/.config/jss-dev/billy-account.txt; TOKEN=$(jq -n --arg e "$(sed -n 's/^email=//p' $F)" --arg p "$(sed -n 's/^password=//p' $F)" '{email: $e, password: $p}' | curl -s -X POST http://localhost:4443/idp/credentials -H 'Content-Type: application/json' --data-binary @- | jq -r .access_token)
 ```
 
-List what's in a container:
+List what's in a container (run commands from your project root folder):
 
 ```bash
 curl -s http://localhost:4443/billy/holon/ -H "Authorization: Bearer $TOKEN" | jq -r '.contains[]? // .["ldp:contains"][]? | .["@id"]? // .'
@@ -131,6 +133,19 @@ http://localhost:4443/billy/holon/home-monitoring/
 http://localhost:4443/billy/holon/projection.jsonld
 http://localhost:4443/billy/holon/scene.jsonld
 ```
+Since holons can contain other holons, one can traverse into contained holons.
+
+```bash
+curl -s http://localhost:4443/billy/holon/home-monitoring -H "Authorization: Bearer $TOKEN" | jq -r '.contains[]? // .["ldp:contains"][]? | .["@id"]? // .'```
+
+```text
+http://localhost:4443/billy/holon/home-monitoring/boundary.jsonld
+http://localhost:4443/billy/holon/home-monitoring/event.jsonld
+http://localhost:4443/billy/holon/home-monitoring/projection.jsonld
+http://localhost:4443/billy/holon/home-monitoring/scene.jsonld
+```
+
+
 
 The same command works on any container. Use `/billy/` for the pod root, or add
 `home-monitoring/` or `food-security/` to the holon path.
