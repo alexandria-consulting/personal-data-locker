@@ -186,12 +186,10 @@ and scene graphs together produce zero results, warnings included, against
 
 - The HGA drafts have no fluent terms yet, so `fl:` stands in for the pattern
   from "Fluents, Projections, and Observables".
-- Everything UCM uses the `https://w3.org/ns/ucm#` namespace, including the
+- Everything UCM uses the `https://www.w3.org/ns/ucm#` namespace, including the
   holons' boundary links to UCM's shapes (`ucm:ParticipationShape`,
-  `ucm:StatementShape`). The published core shapes and lifecycle vocabulary
-  still use `urn:w3c:cg:ucm#` and `urn:w3c:cg:ucm:shapes#`, so
-  `check-holon-sample.py` maps both onto `https://w3.org/ns/ucm#` before
-  validating, and checks that each linked shape exists.
+  `ucm:StatementShape`), matching the published ontology and core shapes.
+  `check-holon-sample.py` checks that each linked shape exists.
 - UCM has no property for a reading's value, so each observation uses
   `rdf:value` and a LOINC code in `dcterms:type`.
 - A statement still in force appears in both the event and scene graphs, as

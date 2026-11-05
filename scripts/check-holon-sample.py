@@ -26,7 +26,7 @@ POD = "http://localhost:4443/billy/"
 BASE = POD + "holon/"
 GRAPHS = ["scene", "boundary", "event", "projection"]
 HOLONS = ["", "home-monitoring/", "food-security/"]
-UCM_NS = "https://w3.org/ns/ucm#"
+UCM_NS = "https://www.w3.org/ns/ucm#"
 
 failed = False
 
@@ -65,17 +65,8 @@ def union(*suffixes):
     return g
 
 
-# The published shapes and lifecycle vocabulary still use urn:w3c:cg:ucm# and
-# urn:w3c:cg:ucm:shapes#; the data uses https://w3.org/ns/ucm# for both.
-def ucm_file(name):
-    text = (open(os.path.join(UCM, name)).read()
-            .replace("urn:w3c:cg:ucm:shapes#", UCM_NS)
-            .replace("urn:w3c:cg:ucm#", UCM_NS))
-    return rdflib.Graph().parse(data=text, format="turtle")
-
-
-ucm = ucm_file("unified-care-model.ttl") + ucm_file("ucm-lifecycle-vocabularies.ttl")
-ucm_shapes = ucm_file("ucm-core-shapes.ttl")
+ucm = rdflib.Graph().parse(os.path.join(UCM, "unified-care-model.ttl"), format="turtle")
+ucm_shapes = rdflib.Graph().parse(os.path.join(UCM, "ucm-core-shapes.ttl"), format="turtle")
 vocab = load("fluent-vocab.jsonld")
 vocab_graph = rdflib.Graph()
 for s, p, o, _ in vocab.quads():
