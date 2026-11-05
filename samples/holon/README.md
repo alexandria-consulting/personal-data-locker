@@ -68,6 +68,74 @@ triples are in `@graph`.
 | `scene.jsonld` | What's current: the UCM nodes still in force, each fluent's head event and value, and ordinary triples for fluents that stand for a property (`ucm:locatedAt`, `ucm:hasLifecycleState`) |
 | `projection.jsonld` | An `hproj:NowGraph` envelope pointing at the holon's scene and event graphs |
 
+## Viewing what's in the pod
+
+Use `curl` with Billy's login token. This server has no pod browser: opening
+<http://localhost:4443/billy/> shows raw JSON-LD, and `/billy/holon/` answers
+401 because a browser tab isn't logged in:
+
+```json
+{"error":"Unauthorized","message":"Authentication required"}
+```
+
+Run these in the same terminal, with the server up. First, get a token, which
+you should treat like a password:
+
+```bash
+F=~/.config/jss-dev/billy-account.txt; TOKEN=$(jq -n --arg e "$(sed -n 's/^email=//p' $F)" --arg p "$(sed -n 's/^password=//p' $F)" '{email: $e, password: $p}' | curl -s -X POST http://localhost:4443/idp/credentials -H 'Content-Type: application/json' --data-binary @- | jq -r .access_token)
+```
+
+List what's in a container:
+
+```bash
+curl -s http://localhost:4443/billy/holon/ -H "Authorization: Bearer $TOKEN" | jq -r '.contains[]? // .["ldp:contains"][]? | .["@id"]? // .'
+```
+
+```text
+http://localhost:4443/billy/holon/boundary.jsonld
+http://localhost:4443/billy/holon/event.jsonld
+http://localhost:4443/billy/holon/food-security/
+http://localhost:4443/billy/holon/home-monitoring/
+http://localhost:4443/billy/holon/projection.jsonld
+http://localhost:4443/billy/holon/scene.jsonld
+http://localhost:4443/billy/holon/vocab.jsonld
+```
+
+The same command works on any container. Use `/billy/` for the pod root, or add
+`home-monitoring/` or `food-security/` to the holon path.
+
+Read a file:
+
+```bash
+curl -s http://localhost:4443/billy/holon/food-security/scene.jsonld -H "Authorization: Bearer $TOKEN" -H 'Accept: application/ld+json' | jq '.["@graph"]'
+```
+
+This prints the whole graph. The end of it shows that the pantry handshake is
+currently Accepted, and which event set that state:
+
+```json
+  {
+    "@id": "http://localhost:4443/billy/holon/food-security/event.jsonld#pantry-handshake",
+    "ucm:hasLifecycleState": {
+      "@id": "ucm:Accepted"
+    }
+  },
+  {
+    "@id": "http://localhost:4443/billy/holon/food-security/boundary.jsonld#pantry-handshake-state",
+    "fl:headEvent": {
+      "@id": "http://localhost:4443/billy/holon/food-security/event.jsonld#e3"
+    },
+    "fl:currentValue": {
+      "@id": "ucm:Accepted"
+    }
+  }
+```
+
+Keep the `Accept: application/ld+json` header. JSS's `text/turtle` conversion of
+these files is lossy: it leaves compact IRIs unexpanded (`<ucm:Accepted>`), drops
+nested nodes with no `@id` (so the SHACL shapes come back empty), and loses the
+graph name.
+
 ## How the two models meet
 
 - **UCM is the content; the holon is the envelope.** Each event's
