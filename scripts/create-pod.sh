@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 # SPDX-License-Identifier: AGPL-3.0-only
-# Copyright (C) 2026 Eric Jahn
 # Create a pod (account) with a generated password and save its login to
 # ~/.config/jss-dev/<pod>-account.txt (mode 600), where grant-webid.sh and
 # the README examples look for it. The password is never printed.
