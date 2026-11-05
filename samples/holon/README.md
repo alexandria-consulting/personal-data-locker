@@ -20,16 +20,16 @@ other common name maps onto one of them:
 
 | Graph here | Name in a source | Where it's used | Definition |
 | --- | --- | --- | --- |
-| **Scene** | Scene graph | "The Holonic Graph", "The Holon's Accountant" | What this is right now: current assertional state, with one current value per fluent |
-| | Now graph | "The Holonic Graph", "The Holon's Accountant" | A view of current state derived from the history |
-| **Boundary** | Boundary graph | W3C Holon CG | The constraints and rules acting on the system, and the actions it exposes as interfaces |
-| | Domain graph | "The Holonic Graph" | The rules and categories that govern the holon: SHACL shapes, OWL axioms, SKOS schemes |
-| | Knowledge graph | "The Holon's Accountant", W3C Holon CG | Declarations and identity, written once; the entities within the system |
-| | Schema graph | "The Holon's Accountant" | What governs the knowledge graph's declarations |
-| **Event** | Event graph | "The Holon's Accountant", W3C Holon CG | The append-only log of how resources evolve over time |
-| | Context graph | "The Holonic Graph", W3C Holon CG | For whom, when and why something means what it means: author, time, authority, purpose, confidence |
-| | History graph | "The Holonic Graph" | Append-only, never retracted: the ground truth of events |
-| **Projection** | Projection | W3C Holon CG, HGA `hproj:` | A read-only map of the system, exposed outward |
+| **Scene** | Scene graph | ["The Holonic Graph"](https://inferenceengineer.substack.com/p/the-holonic-graph-a-new-architecture), ["The Holon's Accountant"](https://inferenceengineer.substack.com/p/the-holons-accountant) | What this is right now: current assertional state, with one current value per fluent |
+| | Now graph | ["The Holonic Graph"](https://inferenceengineer.substack.com/p/the-holonic-graph-a-new-architecture), ["The Holon's Accountant"](https://inferenceengineer.substack.com/p/the-holons-accountant) | A view of current state derived from the history |
+| **Boundary** | Boundary graph | [W3C Holon CG](https://www.w3.org/community/holon/) | The constraints and rules acting on the system, and the actions it exposes as interfaces |
+| | Domain graph | ["The Holonic Graph"](https://inferenceengineer.substack.com/p/the-holonic-graph-a-new-architecture) | The rules and categories that govern the holon: SHACL shapes, OWL axioms, SKOS schemes |
+| | Knowledge graph | ["The Holon's Accountant"](https://inferenceengineer.substack.com/p/the-holons-accountant), [W3C Holon CG](https://www.w3.org/community/holon/) | Declarations and identity, written once; the entities within the system |
+| | Schema graph | ["The Holon's Accountant"](https://inferenceengineer.substack.com/p/the-holons-accountant) | What governs the knowledge graph's declarations |
+| **Event** | Event graph | ["The Holon's Accountant"](https://inferenceengineer.substack.com/p/the-holons-accountant), [W3C Holon CG](https://www.w3.org/community/holon/) | The append-only log of how resources evolve over time |
+| | Context graph | ["The Holonic Graph"](https://inferenceengineer.substack.com/p/the-holonic-graph-a-new-architecture), [W3C Holon CG](https://www.w3.org/community/holon/) | For whom, when and why something means what it means: author, time, authority, purpose, confidence |
+| | History graph | ["The Holonic Graph"](https://inferenceengineer.substack.com/p/the-holonic-graph-a-new-architecture) | Append-only, never retracted: the ground truth of events |
+| **Projection** | Projection | [W3C Holon CG](https://www.w3.org/community/holon/), [HGA `hproj:`](https://github.com/w3c-cg/holon/blob/main/architectures/hga/hga-pass-e-projection.databook.md) | A read-only map of the system, exposed outward |
 
 Two names are not one of the four:
 
