@@ -1,8 +1,8 @@
 # Third-party notices
 
-This repository holds configuration only: a Containerfile, a Kubernetes Pod
-definition, ConfigMap profiles, a Caddyfile, a Makefile, a helper script and
-documentation. Those files are Copyright (C) 2026 Eric Jahn and licensed
+This repository holds configuration only. The Kubernetes Pod
+definition, Makefile, helper script and
+documentation are Copyright (C) 2026 Eric Jahn and licensed
 under the GNU Affero General Public License v3.0 only (`AGPL-3.0-only`); the
 full text is in `LICENSE`.
 
