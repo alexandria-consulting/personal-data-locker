@@ -1,5 +1,4 @@
 # SPDX-License-Identifier: AGPL-3.0-only
-# Copyright (C) 2026 Eric Jahn
 # Internet profile: `make up PROFILE=internet` keeps JSS bound to
 # 127.0.0.1:4443; Caddy on the host terminates HTTPS for the public name and
 # proxies to it (see proxy/Caddyfile).
