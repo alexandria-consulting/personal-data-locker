@@ -1,7 +1,7 @@
 # Holonic sample data for a pod
 
 A small, made-up dataset for the `billy` pod. Its structure follows Kurt
-Cagle's holonic graph architecture: the W3C Holon Graph Community Group's
+Cagle's description of a holonic graph architecture: the W3C Holon Graph Community Group's
 [HGA drafts](https://github.com/w3c-cg/holon/tree/main/architectures/hga)
 and his posts in [The Inference Engineer](https://inferenceengineer.substack.com/).
 Its content uses the [Unified Care Model](https://github.com/w3c-cg/ucm) and
@@ -30,6 +30,7 @@ other common name maps onto one of them:
 | | Context graph | ["The Holonic Graph"](https://inferenceengineer.substack.com/p/the-holonic-graph-a-new-architecture), [W3C Holon CG](https://www.w3.org/community/holon/) | For whom, when and why something means what it means: author, time, authority, purpose, confidence |
 | | History graph | ["The Holonic Graph"](https://inferenceengineer.substack.com/p/the-holonic-graph-a-new-architecture) | Append-only, never retracted: the ground truth of events |
 | **Projection** | Projection | [W3C Holon CG](https://www.w3.org/community/holon/), [HGA `hproj:`](https://github.com/w3c-cg/holon/blob/main/architectures/hga/hga-pass-e-projection.databook.md) | A read-only map of the system, exposed outward |
+
 *special credit to [Kurt Cagle's Inference Engineer Substack column](https://inferenceengineer.substack.com)
 
 
