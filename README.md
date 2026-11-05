@@ -1,4 +1,8 @@
-# Personal data locker (JSS on Podman)
+# Personal data locker 
+## It is a:
+  * JSS Solid Server for identify, sharing/access-control, personal portability and ownership
+  * in a Podman container for easy Kubernetes hosting
+  * with some sample Unified Care Model holonic data to load [holinic data is simply a way to flexibly structure the data in a knowledge graph], but you can load any RDF (self-describing data) you want
 
 A contained development install of the [JavaScript Solid Server](https://jss.live/)
 (npm `javascript-solid-server`). Everything runs inside a Podman pod; nothing is
